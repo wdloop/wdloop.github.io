@@ -348,25 +348,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  tl.to(tubePerc, {
-    percent: 1,
-    ease: Linear.easeNone,
-    duration: 5,
-    onUpdate: function () {
-      cameraTargetPercentage = tubePerc.percent;
+// ... your existing code above ...
+// After you create textMeshes and before your GSAP timeline definition:
 
-      // No sound logic, just label logic remains:
-      textsData.forEach(({ text, perc }) => {
-        if (tubePerc.percent >= perc && !triggeredTextLabels.has(text)) {
-          triggeredTextLabels.add(text);
+// --- Synchronize text reveal with transition.mp3 on scroll up AND scroll down ---
+
+// You need to track which labels are visible and play the sound on reveal in either direction.
+// We'll use a Set for revealed, and a Set for currently visible, and on each update check for changes.
+
+const revealedLabels = new Set();
+
+// Make sure textMeshes are hidden initially
+textMeshes.forEach(mesh => mesh.visible = false);
+
+// Update function for GSAP timeline (scroll both ways)
+tl.to(tubePerc, {
+  percent: 1,
+  ease: Linear.easeNone,
+  duration: 5,
+  onUpdate: function () {
+    cameraTargetPercentage = tubePerc.percent;
+
+    textsData.forEach(({ text, perc }, idx) => {
+      // When scrolling DOWN, reveal if not revealed yet
+      if (tubePerc.percent >= perc && !revealedLabels.has(text)) {
+        textMeshes[idx].visible = true;
+        revealedLabels.add(text);
+        // Play transition sound
+        if (window.APP && APP.sounds && APP.sounds.transition) {
+          APP.sounds.transition.play();
         }
-      });
+      }
+      // When scrolling UP, hide and allow sound again on re-reveal
+      if (tubePerc.percent < perc && revealedLabels.has(text)) {
+        textMeshes[idx].visible = true;
+        revealedLabels.delete(text);
+      }
+    });
 
-      let progress = gsap.utils.mapRange(0.975, 1.0, 0, 1, tubePerc.percent);
-      progress = gsap.utils.clamp(0, 1, progress);
-      cinematicTimeline.progress(progress);
-    }
-  });
+    // Cinematic timeline progress unchanged
+    let progress = gsap.utils.mapRange(0.975, 1.0, 0, 1, tubePerc.percent);
+    progress = gsap.utils.clamp(0, 1, progress);
+    cinematicTimeline.progress(progress);
+  }
+});
 
   document.addEventListener("mousemove", (evt) => {
     cameraRotationProxyX = 3.14;
@@ -391,3 +416,256 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+// Create APP namespace if not already present
+window.APP = window.APP || {};
+APP.sounds = {}; // Using an object for easier access by name
+APP.data = {
+  sounds: [
+    {
+      name: "ambient",
+      file: "assets/sounds/maxkomusic-space-heroes.mp3", // correct path to file
+      loop: true,
+      volume: 0.1,
+      html5: true
+    },
+    {
+      name: "click",
+      file: "assets/sounds/click.mp3",
+      loop: false,
+      volume: 1.0,
+      html5: true
+    },
+    {
+      name: "transition",
+      file: "assets/sounds/transition.mp3",
+      loop: false,
+      volume: 0.2,
+      html5: true
+    }
+  ]
+};
+
+// Initialize default sound settings
+$.each(APP.data.sounds, function (i, s) {
+  const sound = new Howl({
+    src: s.file,
+    loop: s.loop,
+    volume: s.volume,
+    html5: s.html5,
+    onend: function () {
+      console.log(`[Howler] Finished playing: ${s.name}`);
+    },
+    onload: function() {
+      console.log(`[Howler] Sound loaded: ${s.name}`);
+    },
+    onloaderror: function(id, err) {
+      console.error(`[Howler] Error loading sound ${s.name} (ID: ${id}):`, err);
+    }
+  });
+  APP.sounds[s.name] = sound;
+  // Store the initial volume for each sound
+  APP.sounds[s.name].initialVolume = s.volume;
+});
+
+// Global Mute Function
+APP.muteAll = function (ignoreGlobalSoundState) {
+  console.log("------------------------------------");
+  console.log("[MUTE] Muting all sounds...");
+  $(".footer-sound .sbar").addClass("noAnim");
+
+  for (const soundName in APP.sounds) {
+    if (APP.sounds.hasOwnProperty(soundName)) {
+      const sound = APP.sounds[soundName];
+      if (sound.playing()) {
+        console.log(`[MUTE] Fading sound "${soundName}" from ${sound.volume()} to 0`);
+        sound.fade(sound.volume(), 0, 500); // 500ms fade
+      } else {
+        console.log(`[MUTE] Sound "${soundName}" is not playing, not fading. Setting volume to 0.`);
+        sound.volume(0); // Ensure volume is 0 even if not playing
+      }
+    }
+  }
+
+  if (!ignoreGlobalSoundState) {
+    APP.soundOn = false;
+    console.log("[MUTE] APP.soundOn set to false.");
+  }
+  console.log("------------------------------------");
+};
+
+// Global Unmute Function
+APP.unMuteAll = function (ignoreGlobalSoundState) {
+  console.log("------------------------------------");
+  console.log("[UNMUTE] Unmuting all sounds...");
+  $(".footer-sound .sbar").removeClass("noAnim");
+
+  for (const soundName in APP.sounds) {
+    if (APP.sounds.hasOwnProperty(soundName)) {
+      const sound = APP.sounds[soundName];
+      console.log(`[UNMUTE] Fading sound "${soundName}" from ${sound.volume()} to ${sound.initialVolume}`);
+      sound.fade(sound.volume(), sound.initialVolume, 500); // 500ms fade
+
+      // If a sound was completely stopped (not just faded), ensure it plays again if it should
+      // This is crucial for ambient loops
+      if (!sound.playing() && sound.initialVolume > 0 && sound.loop()) {
+        console.log(`[UNMUTE] Sound "${soundName}" was not playing, restarting it.`);
+        sound.play();
+      }
+    }
+  }
+
+  if (!ignoreGlobalSoundState) {
+    APP.soundOn = true;
+    console.log("[UNMUTE] APP.soundOn set to true.");
+  }
+  console.log("------------------------------------");
+};
+
+// Initial state, assume sound is on until cookie says otherwise
+APP.soundOn = true;
+
+// Handle browser tab visibility
+(function () {
+  let hidden, visibilityChange;
+  if (typeof document.hidden !== "undefined") {
+    hidden = "hidden";
+    visibilityChange = "visibilitychange";
+  } else if (typeof document.mozHidden !== "undefined") {
+    hidden = "mozHidden";
+    visibilityChange = "mozvisibilitychange";
+  } else if (typeof document.msHidden !== "undefined") {
+    hidden = "msHidden";
+    visibilityChange = "msvisibilitychange";
+  } else if (typeof document.webkitHidden !== "undefined") {
+    hidden = "webkitHidden";
+    visibilityChange = "webkitvisibilitychange";
+  }
+
+  if (typeof document.addEventListener !== "undefined") { // Check if addEventListener is supported
+    document.addEventListener(visibilityChange, () => {
+      if (document[hidden]) {
+        APP.hidden = true;
+        console.log("[Visibility] Tab hidden, muting sounds (ignoreGlobalSoundState: true).");
+        APP.muteAll(true);
+      } else {
+        APP.hidden = false;
+        if (APP.soundOn) {
+          console.log("[Visibility] Tab visible, unmuting sounds (ignoreGlobalSoundState: true) if APP.soundOn is true.");
+          APP.unMuteAll(true);
+        } else {
+          console.log("[Visibility] Tab visible, but APP.soundOn is false, keeping muted.");
+        }
+      }
+    });
+  } else {
+      console.warn("[Visibility] document.addEventListener not supported, tab visibility handling skipped.");
+  }
+})();
+
+
+// Toggle sound on footer click
+$(".footer-sound").click(function () {
+  console.log("------------------------------------");
+  console.log("[CLICK] Footer sound control clicked!");
+  
+  // Only play click sound when unmuting
+  if (APP.soundOn) {
+    APP.muteAll();
+    setCookie("muted", 1);
+  } else {
+    APP.unMuteAll();
+    setCookie("muted", 0);
+    APP.sounds['click']?.play();
+  }
+  console.log(`[CLICK] APP.soundOn state after click: ${APP.soundOn}`);
+  console.log("------------------------------------");
+});
+
+// Optional: Auto-enable sounds on user interaction
+// This is CRUCIAL for mobile browsers and some desktop browsers to allow audio playback.
+// The ambient sound should start here.
+
+//Space Heroes by MaxKoMusic | https://maxkomusic.com/
+//Music promoted by https://www.free-stock-music.com
+//Creative Commons / Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+//https://creativecommons.org/licenses/by-sa/3.0/deed.en_US
+
+
+["body", ".background", "#webgl"].forEach(selector => {
+  $(selector).one('click', () => { // Use .one() to trigger only once
+    console.log(`[User Interaction] User clicked on "${selector}", attempting to unlock and play ambient sound.`);
+    if (APP.sounds["ambient"] && !APP.sounds["ambient"].playing()) {
+      APP.sounds["ambient"].play();
+      console.log("[User Interaction] Ambient sound play() called.");
+    } else if (APP.sounds["ambient"] && APP.sounds["ambient"].playing()) {
+      console.log("[User Interaction] Ambient sound already playing.");
+    } else {
+      console.warn("[User Interaction] Ambient sound object not found or not initialized.");
+    }
+  });
+});
+
+// Mouse tracking for interaction
+APP.mouse = new THREE.Vector2(0, 0);
+if (!APP.isMobile) {
+  window.addEventListener("mousemove", e => {
+    const x = e.clientX - window.innerWidth / 2;
+    const y = e.clientY - window.innerHeight / 2;
+    APP.mouse.set(x, y);
+  });
+}
+
+// Reel close button sound
+$('#reel .close').on('click', function () {
+  console.log("[Reel Close] Click sound played.");
+  // Only play click sound if not muted
+  if (APP.soundOn) {
+    APP.sounds["click"]?.play();
+  }
+  APP.hideReel?.();
+});
+
+// Helper: Set cookie
+function setCookie(name, value, days = 30) {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+}
+
+// Helper: Get cookie
+function getCookie(name) {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+// Auto-resume sound state based on cookie 
+$(document).ready(function () {
+  console.log("[Document Ready] Checking cookie for sound state.");
+  const muted = getCookie("muted");
+  if (muted === "1") {
+    console.log("[Document Ready] 'muted' cookie found (value: 1). Muting all sounds.");
+    APP.muteAll();
+    APP.soundOn = false; // Ensure APP.soundOn reflects the muted state
+  } else {
+    console.log("[Document Ready] 'muted' cookie not found or value is 0. Unmuting all sounds (if not already).");
+    // Ensure sounds are at their initial volumes if not explicitly muted by cookie
+    APP.unMuteAll();
+    APP.soundOn = true; // Ensure APP.soundOn reflects the unmuted state
+  }
+});
+
+
+document.body.addEventListener('click', function() {
+  if (APP.sounds['click']) {
+    APP.sounds['click'].play();
+  }
+});
+
