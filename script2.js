@@ -9,9 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-
-
-
   const ww = window.innerWidth;
   const wh = window.innerHeight;
 
@@ -30,96 +27,93 @@ document.addEventListener("DOMContentLoaded", () => {
   cameraGroup.add(camera);
   scene.add(cameraGroup);
 
+  const points = [];
+  const segments = 200;
+  const a = 50;  // width of the lobes
+  const b = 20;  // vertical variation (height)
+  const zStep = 3; // stretch along the z-axis
 
-const points = [];
-const segments = 200;
-const a = 50;  // width of the lobes
-const b = 20;  // vertical variation (height)
-const zStep = 3; // stretch along the z-axis
+  for (let i = 0; i <= segments; i++) {
+    const t = (i / segments) * Math.PI * 2;
 
-for (let i = 0; i <= segments; i++) {
-  const t = (i / segments) * Math.PI * 2;
+    const x = a * Math.sin(t);
+    const y = b * Math.sin(t) * Math.cos(t); // adds vertical wave
+    const z = zStep * t; // makes it extend forward
 
-  const x = a * Math.sin(t);
-  const y = b * Math.sin(t) * Math.cos(t); // adds vertical wave
-  const z = zStep * t; // makes it extend forward
+    points.push(new THREE.Vector3(x, y, z));
+  }
 
-  points.push(new THREE.Vector3(x, y, z));
-}
+  const path = new THREE.CatmullRomCurve3(points);
+  path.tension = 0.5;
+  path.closed = false;
 
-const path = new THREE.CatmullRomCurve3(points);
-path.tension = 0.5;
-path.closed = false;
-
-const tubeGeometry = new THREE.TubeGeometry(path, 3000, 4, 40, false);
-
+  const tubeGeometry = new THREE.TubeGeometry(path, 3000, 4, 40, false);
 
   const texture = new THREE.TextureLoader().load("tex.jpg", (t) => {
     t.wrapS = t.wrapT = THREE.RepeatWrapping;
     t.repeat.set(15, 4);
   });
 
-const tunnelShaderMaterial = new THREE.ShaderMaterial({
-  uniforms: {
-    time: { value: 0 },
-    texture1: { value: texture },
-    lightDirection: { value: new THREE.Vector3(1, 1, 1).normalize() },
-    ambientIntensity: { value: 0.6 },  // Soft ambient light
-    diffuseIntensity: { value: 0.7 },  // Control main light
-    gammaCorrection: { value: 1.1 }    // sRGB correction
-  },
-  vertexShader: `
-    uniform float time;
-    varying vec2 vUv;
-    varying vec3 vNormal;
-    varying vec3 vViewPosition;
+  const tunnelShaderMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+      time: { value: 0 },
+      texture1: { value: texture },
+      lightDirection: { value: new THREE.Vector3(1, 1, 1).normalize() },
+      ambientIntensity: { value: 0.6 },  // Soft ambient light
+      diffuseIntensity: { value: 0.7 },  // Control main light
+      gammaCorrection: { value: 1.1 }    // sRGB correction
+    },
+    vertexShader: `
+      uniform float time;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vViewPosition;
 
-    void main() {
-      vUv = uv;
-      vNormal = normalize(normalMatrix * normal);
+      void main() {
+        vUv = uv;
+        vNormal = normalize(normalMatrix * normal);
 
-      vec3 pos = position;
-      float offset = sin(pos.y * 2.0 + time * 2.0) * 0.2;
-      pos += normal * offset;
+        vec3 pos = position;
+        float offset = sin(pos.y * 2.0 + time * 2.0) * 0.2;
+        pos += normal * offset;
 
-      vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-      vViewPosition = -mvPosition.xyz;
+        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+        vViewPosition = -mvPosition.xyz;
 
-      gl_Position = projectionMatrix * mvPosition;
-    }
-  `,
-  fragmentShader: `
-    uniform sampler2D texture1;
-    uniform vec3 lightDirection;
-    uniform float ambientIntensity;
-    uniform float diffuseIntensity;
-    uniform float gammaCorrection;
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `,
+    fragmentShader: `
+      uniform sampler2D texture1;
+      uniform vec3 lightDirection;
+      uniform float ambientIntensity;
+      uniform float diffuseIntensity;
+      uniform float gammaCorrection;
 
-    varying vec2 vUv;
-    varying vec3 vNormal;
-    varying vec3 vViewPosition;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vViewPosition;
 
-    void main() {
-      vec4 texColor = texture2D(texture1, vUv);
+      void main() {
+        vec4 texColor = texture2D(texture1, vUv);
 
-      // Basic lighting
-      float diffuse = max(dot(normalize(vNormal), normalize(lightDirection)), 0.0);
-      float lighting = ambientIntensity + diffuse * diffuseIntensity;
+        // Basic lighting
+        float diffuse = max(dot(normalize(vNormal), normalize(lightDirection)), 0.0);
+        float lighting = ambientIntensity + diffuse * diffuseIntensity;
 
-      // Apply lighting to texture color
-      vec3 litColor = texColor.rgb * lighting;
+        // Apply lighting to texture color
+        vec3 litColor = texColor.rgb * lighting;
 
-      // Gamma correction
-      litColor = pow(litColor, vec3(1.0 / gammaCorrection));
+        // Gamma correction
+        litColor = pow(litColor, vec3(1.0 / gammaCorrection));
 
-      gl_FragColor = vec4(litColor, texColor.a);
-    }
-  `,
-  side: THREE.BackSide
-});
+        gl_FragColor = vec4(litColor, texColor.a);
+      }
+    `,
+    side: THREE.BackSide
+  });
 
-tunnelShaderMaterial.uniforms.lightDirection.value.set(1, 1, 1).normalize();
-
+  tunnelShaderMaterial.uniforms.lightDirection.value.set(1, 1, 1).normalize();
 
   const tube = new THREE.Mesh(tubeGeometry, tunnelShaderMaterial);
   scene.add(tube);
@@ -158,138 +152,96 @@ tunnelShaderMaterial.uniforms.lightDirection.value.set(1, 1, 1).normalize();
   const textMeshes = [];
   const loader = new THREE.FontLoader();
 
-  // Audio
-  const transitionSound = new Audio('transition.wav');
-  transitionSound.volume = 0.5;
-
-  const bgAudio = document.getElementById("bgAudio");
-  if (bgAudio) bgAudio.volume = 0.4;
-
-  // 🔓 Audio Unlock on First Interaction
-  let userHasInteracted = false;
-  function unlockAudioPlayback() {
-    if (userHasInteracted) return;
-    userHasInteracted = true;
-
-    transitionSound.play().then(() => {
-      transitionSound.pause();
-      transitionSound.currentTime = 0;
-    }).catch(() => {});
-
-    if (bgAudio) {
-      bgAudio.play().then(() => {
-        bgAudio.pause();
-        bgAudio.currentTime = 0;
-      }).catch(() => {});
-    }
-
-    window.removeEventListener("click", unlockAudioPlayback);
-    window.removeEventListener("touchstart", unlockAudioPlayback);
-    window.removeEventListener("keydown", unlockAudioPlayback);
-  }
-  window.addEventListener("click", unlockAudioPlayback);
-  window.addEventListener("touchstart", unlockAudioPlayback);
-  window.addEventListener("keydown", unlockAudioPlayback);
-
   // Labels
-const triggeredTextLabels = new Set();
+  const triggeredTextLabels = new Set();
 
+  const textsData = [
+    { text: 'Design\nflows in\nloops.', perc: 0.04, style: 'h1' },
+    { text: 'Every loop leads forward.', perc: 0.12, style: 'p' },
+    { text: 'Every pixel has purpose.', perc: 0.2, style: 'p' },
+    { text: 'Not just seen.\nFelt.', perc: 0.28, style: 'p' },
+    { text: 'We shape silence into meaning.', perc: 0.36, style: 'p' },
+    { text: 'Time fades.\nDesign echoes.', perc: 0.44, style: 'p' },
+    { text: 'Because true design doesn’t stop.\nIt pulses.\nIt returns.\nIt loops.', perc: 0.52, style: 'p' },
+    { text: 'Our mission is to uncover the unseen.\nTo design not what is expected, but what is necessary.', perc: 0.6, style: 'p' },
+    { text: 'LOOP is not a destination.\nIt’s a rhythm.\nA living dialogue between brand and soul.', perc: 0.68, style: 'p' },
+    { text: 'In a world obsessed with outcomes,\n we focus on the essence\nthe flow, the feeling, \nthe forward motion.', perc: 0.80, style: 'p' },
+    { text: 'Each project is a loop in itself: beginning with intent,\n shaped by insight, and returning to reflection.', perc: 0.84, style: 'p' },
+    { text: 'We do not simply build websites—we sculpt digital landscapes, \nwhere form and function engage in quiet conversation.', perc: 0.92, style: 'p' },
+    { text: 'At Loop, we believe design is a continuous journey \nA cycle where creativity and purpose intertwine endlessly.', perc: 0.98, style: 'p' },
+  ];
 
-const textsData = [
-  { text: 'Design\nflows in\nloops.', perc: 0.04, style: 'h1' },
-  { text: 'Every loop leads forward.', perc: 0.12, style: 'p' },
-  { text: 'Every pixel has purpose.', perc: 0.2, style: 'p' },
-  { text: 'Not just seen.\nFelt.', perc: 0.28, style: 'p' },
-  { text: 'We shape silence into meaning.', perc: 0.36, style: 'p' },
-  { text: 'Time fades.\nDesign echoes.', perc: 0.44, style: 'p' },
-  { text: 'Because true design doesn’t stop.\nIt pulses.\nIt returns.\nIt loops.', perc: 0.52, style: 'p' },
-  { text: 'Our mission is to uncover the unseen.\nTo design not what is expected, but what is necessary.', perc: 0.6, style: 'p' },
-  { text: 'LOOP is not a destination.\nIt’s a rhythm.\nA living dialogue between brand and soul.', perc: 0.68, style: 'p' },
-  { text: 'In a world obsessed with outcomes,\n we focus on the essence\nthe flow, the feeling, \nthe forward motion.', perc: 0.80, style: 'p' },
-  { text: 'Each project is a loop in itself: beginning with intent,\n shaped by insight, and returning to reflection.', perc: 0.84, style: 'p' },
-  { text: 'We do not simply build websites—we sculpt digital landscapes, \nwhere form and function engage in quiet conversation.', perc: 0.92, style: 'p' },
-  { text: 'At Loop, we believe design is a continuous journey \nA cycle where creativity and purpose intertwine endlessly.', perc: 0.98, style: 'p' },
-];
+  const textStyles = {
+    h1: { size: 0.5, font: 'Boldonse_Regular.json', color: 0xffffff },
+    h2: { size: 0.2, font: 'Boldonse_Regular.json', color: 0xffffff },
+    p:  { size: 0.15, font: 'Boldonse_Regular.json', color: 0xffffff },
+  };
 
+  // Make sure you have these font files in your public path or server
 
+  const fontPromises = {};
 
-const textStyles = {
-  h1: { size: 0.5, font: 'Boldonse_Regular.json', color: 0xffffff },  // ← white
-  h2: { size: 0.2, font: 'Boldonse_Regular.json', color: 0xffffff },
-  p:  { size: 0.15, font: 'Boldonse_Regular.json', color: 0xffffff },
-};
-
-
-// Make sure you have these font files in your public path or server
-
-const fontPromises = {};
-
-// Load fonts in parallel and cache them
-const uniqueFonts = new Set(Object.values(textStyles).map(style => style.font));
-uniqueFonts.forEach(fontFile => {
-  fontPromises[fontFile] = new Promise((resolve, reject) => {
-    loader.load(fontFile, resolve, undefined, reject);
-  });
-});
-
-// Once all fonts are loaded
-Promise.all(Object.values(fontPromises)).then(fonts => {
-  const fontMap = {};
-  Object.keys(fontPromises).forEach((key, i) => {
-    fontMap[key] = fonts[i];
+  // Load fonts in parallel and cache them
+  const uniqueFonts = new Set(Object.values(textStyles).map(style => style.font));
+  uniqueFonts.forEach(fontFile => {
+    fontPromises[fontFile] = new Promise((resolve, reject) => {
+      loader.load(fontFile, resolve, undefined, reject);
+    });
   });
 
-textsData.forEach(({ text, perc, style }) => {
-  const styleDef = textStyles[style || 'p'];
-  const font = fontMap[styleDef.font];
+  // Once all fonts are loaded
+  Promise.all(Object.values(fontPromises)).then(fonts => {
+    const fontMap = {};
+    Object.keys(fontPromises).forEach((key, i) => {
+      fontMap[key] = fonts[i];
+    });
 
-  const geometry = new THREE.TextGeometry(text, {
-    font: font,
-    size: styleDef.size,
-    height: 0,
-    curveSegments: 2,
-    bevelEnabled: false,
+    textsData.forEach(({ text, perc, style }) => {
+      const styleDef = textStyles[style || 'p'];
+      const font = fontMap[styleDef.font];
+
+      const geometry = new THREE.TextGeometry(text, {
+        font: font,
+        size: styleDef.size,
+        height: 0,
+        curveSegments: 2,
+        bevelEnabled: false,
+      });
+
+      geometry.computeBoundingBox();
+      const bbox = geometry.boundingBox;
+
+      // Calculate vertical height of the text block
+      const textHeight = bbox.max.y - bbox.min.y;
+
+      // Center geometry vertically and horizontally
+      geometry.translate(0, -textHeight / 2, 0);
+      geometry.center();
+
+      const materialtext = new THREE.MeshPhysicalMaterial({
+        color: styleDef.color,
+        emissive: 0xffffff,
+        metalness: 0,
+        roughness: 0.5,
+      });
+
+      const mesh = new THREE.Mesh(geometry, materialtext);
+
+      // Position on the curve
+      const position = path.getPointAt(perc);
+      const lookAhead = path.getPointAt((perc + 0.01) % 1);
+
+      mesh.position.copy(position);
+      mesh.lookAt(lookAhead);
+      mesh.rotateY(Math.PI);
+
+      scene.add(mesh);
+      textMeshes.push(mesh);
+    });
+
+  }).catch(err => {
+    console.error('Failed to load fonts:', err);
   });
-
-  geometry.computeBoundingBox();
-  const bbox = geometry.boundingBox;
-
-  // Calculate vertical height of the text block
-  const textHeight = bbox.max.y - bbox.min.y;
-
-  // Center geometry vertically and horizontally
-  geometry.translate(0, -textHeight / 2, 0);  // vertical centering
-  geometry.center();                           // horizontal centering
-
-const materialtext = new THREE.MeshPhysicalMaterial({
-  color: styleDef.color,
-  emissive: 0xffffff,
-  metalness: 0,
-  roughness: 0.5,
-});
-
-
-
-  const mesh = new THREE.Mesh(geometry, materialtext);
-
-  // Position on the curve
-  const position = path.getPointAt(perc);
-  const lookAhead = path.getPointAt((perc + 0.01) % 1);
-
-  mesh.position.copy(position);
-  mesh.lookAt(lookAhead);
-  mesh.rotateY(Math.PI);
-
-  scene.add(mesh);
-  textMeshes.push(mesh);
-});
-
-}).catch(err => {
-  console.error('Failed to load fonts:', err);
-});
-
-
-
 
   let cameraRotationProxyX = Math.PI;
   let cameraRotationProxyY = 0.0;
@@ -308,16 +260,15 @@ const materialtext = new THREE.MeshPhysicalMaterial({
     pointLight.position.copy(p2);
   }
 
-// Exit position = slightly ahead of tunnel end
-const exitPos = path.getPointAt(1).clone().add(path.getTangentAt(1).clone().multiplyScalar(20));
+  // Exit position = slightly ahead of tunnel end
+  const exitPos = path.getPointAt(1).clone().add(path.getTangentAt(1).clone().multiplyScalar(20));
 
-// Look target = exactly at tunnel end
-const exitTarget = path.getPointAt(1);
+  // Look target = exactly at tunnel end
+  const exitTarget = path.getPointAt(1);
 
-// Out view = further away but centered
-const outViewPos = exitPos.clone().add(new THREE.Vector3(0, 0, 100));
-const outViewTarget = new THREE.Vector3(0, 0, 0); // Look at scene center
-
+  // Out view = further away but centered
+  const outViewPos = exitPos.clone().add(new THREE.Vector3(0, 0, 100));
+  const outViewTarget = new THREE.Vector3(0, 0, 0); // Look at scene center
 
   function render() {
     const transitionProgress = gsap.utils.clamp(0, 1, gsap.utils.mapRange(0.99, 1, 0, 1, tubePerc.percent));
@@ -356,8 +307,7 @@ const outViewTarget = new THREE.Vector3(0, 0, 0); // Look at scene center
   composer.setSize(ww, wh);
   const renderPass = new THREE.RenderPass(scene, camera);
   composer.addPass(renderPass)
-const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(ww, wh), 1, 1, 0);
-
+  const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(ww, wh), 1, 1, 0);
 
   bloomPass.renderToScreen = true;
   composer.addPass(bloomPass);
@@ -368,7 +318,6 @@ const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(ww, wh), 1, 1, 0);
   let cinematicTimeline = gsap.timeline({ paused: true });
   const theEnd = document.getElementById("theend");
 
- 
   cinematicTimeline
     .to(cameraGroup.position, {
       x: 150,
@@ -406,15 +355,10 @@ const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(ww, wh), 1, 1, 0);
     onUpdate: function () {
       cameraTargetPercentage = tubePerc.percent;
 
+      // No sound logic, just label logic remains:
       textsData.forEach(({ text, perc }) => {
-        if (tubePerc.percent >= perc && !triggeredTextLabels.has(text) && userHasInteracted) {
-          try {
-            transitionSound.currentTime = 0;
-            transitionSound.play();
-            triggeredTextLabels.add(text);
-          } catch (e) {
-            console.warn(`Audio failed to play for ${text}:`, e);
-          }
+        if (tubePerc.percent >= perc && !triggeredTextLabels.has(text)) {
+          triggeredTextLabels.add(text);
         }
       });
 
@@ -447,4 +391,3 @@ const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(ww, wh), 1, 1, 0);
     });
   }
 });
-

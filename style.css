@@ -129,22 +129,6 @@ body::before {
 
 
 
-
-#theend {
-  opacity: 0;
-  z-index: 99;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.8);
-  transition: none;
-  pointer-events: auto;
-}
-
-#theend.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-
 /* ====== SCROLL TARGET ====== */
 .scrollTarget {
   position: absolute;
@@ -187,7 +171,7 @@ body::before {
 
 
 .infinity-brand {
-  width: 100%;
+  width: 50%;
   height: auto;
   stroke-dasharray: 80;
   stroke-dashoffset: 60;
@@ -196,7 +180,7 @@ body::before {
 }
 
 .infinity-menu {
-  width: 20%;
+  width: 5%;
   height: auto;
   stroke-dasharray: 80;
   stroke-dashoffset: 60;
@@ -211,7 +195,7 @@ body::before {
 
 /* ====== BUTTON STYLES ====== */
 .button {
-padding: 10px 20px;
+  padding: 10px 20px;
   height: 40px;
   display: flex;
   align-items: center;
@@ -266,7 +250,22 @@ canvas.experience {
 
 
 
-
+#custom-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgb(251, 251, 251); /* Custom color */
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: background 0.2s, width 0.2s, height 0.2s;
+}
+body {
+  cursor: none !important; /* Hide default cursor */
+}
 
 
 /* Base styling */
@@ -283,12 +282,14 @@ canvas.experience {
 }
 
 .division3 {
+  position: fixed;          /* or absolute */
+  left: 50%;
   bottom: 30px;
+  transform: translateX(-50%);
   text-align: center;
-  left: 700px;
-  font-size: 0.625rem;
+  font-size: 0.825rem;
+  /* right: 50px; <-- remove this line */
 }
-
 .text-element {
   position: fixed;
   font-family: "Bitcount Grid Single", system-ui;
@@ -372,10 +373,19 @@ p {
   position: fixed;
   bottom: 10%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  z-index: 99;
-  text-align: center;
+  transform: translateX(-50%) scale(0.8);
+  opacity: 0;
+  transition: all 1s ease;
+  pointer-events: auto;
+  z-index: 100;
+  
+}
+
+#theend.show {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 100;
 }
 
 .footer-content {
@@ -412,70 +422,85 @@ a.text-element-footer:hover {
 
 
 
-  .custom-navbar {
-    padding: 0.75rem 1.5rem;
-    z-index: 999; /* above menu */
-  }
+.custom-navbar {
+  padding: 1.5rem 1.5rem;
+  z-index: 999; /* above menu */
+  left: 50px;
+  margin-right: 2rem;
+}
 
-  .btn2 {
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    position: relative;
-    transition: 0.3s;
-    cursor: pointer;
-    z-index: 1300; /* above menu */
-  }
+/* Make .btn2 region much larger, but keep icon centered */
+.btn2 {
+  width: 60px;           /* larger clickable area */
+  height: 60px;          /* larger clickable area */
+  background: transparent;
+  border: none;
+  position: relative;
+  transition: 0.5s;
+  cursor: pointer;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;     /* optional: circular region */
+}
 
-  .btn2 .icon {
-    position: absolute;
-    width: 40px;
-    height: 4px;
-    top: 50%;
-    left: 0;
-    background-color: #ffffff;
-    transform: translateY(-50%);
-    transition: 0.3s;
-  }
+/* Center the icon inside .btn2 */
+.btn2 .icon {
+  position: absolute;
+  width: 20px;           /* keep original icon small */
+  height: 2px;
+  top: 50%;
+  left: 50%;
+  background-color: #ffffff;
+  transform: translate(-50%, -50%);
+  transition: 0.5s;
+}
 
-  .btn2 .icon::before,
-  .btn2 .icon::after {
-    content: "";
-    position: absolute;
-    width: 40px;
-    height: 4px;
-    background-color: #fff;
-    transition: 0.3s;
-  }
+/* Icon bars */
+.btn2 .icon::before,
+.btn2 .icon::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background-color: #fff;
+  transition: 0.3s;
+}
 
-  .btn2 .icon::before {
-    top: -12px;
-  }
+/* Adjust spacing for hamburger icon effect */
+.btn2 .icon::before {
+  top: -7px;
+}
+.btn2 .icon::after {
+  top: 7px;
+}
+.btn2 .icon::before {
+  top: -6px;          /* reduced spacing */
+}
 
-  .btn2 .icon::after {
-    top: 12px;
-  }
+.btn2 .icon::after {
+  top: 6px;
+}
 
-  .btn2.open .icon {
-    background-color: transparent;
-  }
+.btn2.open .icon {
+  background-color: transparent;
+}
 
-  .btn2.open .icon::before {
-    transform: rotate(45deg) translate(7px, 7px);
-    background-color: #ffffff;
-  }
+.btn2.open .icon::before {
+  transform: rotate(45deg) translate(4px, 4px);
+}
 
-  .btn2.open .icon::after {
-    transform: rotate(-45deg) translate(7px, -7px);
-    background-color: #ffffff;
-  }
+.btn2.open .icon::after {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+
 
   /* Fullscreen menu styles */
   #mobileMenu {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #2595be99;
+    background-color: #06181ec3;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -508,58 +533,6 @@ a.text-element-footer:hover {
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
   cursor: pointer;
 }
-
-  
-
-.profile-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  max-width: 300px;
-  width: 100%;
-  position: fixed;
-  bottom: 16px;
-  left: 16px;
-  z-index: 99;
-  color: var(--primary-color);
-  line-height: inherit;
-}
-
-.profile-image {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.profile-name {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.profile-twitter {
-  font-size: 12px;
-  color: #71717a;
-}
-
-.profile-twitter a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.profile-twitter a:hover {
-  text-decoration: underline;
-}
-
-
 
 .scroll {
   width: 100%;

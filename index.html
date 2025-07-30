@@ -46,9 +46,25 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-
+  <div id="custom-cursor"></div>
+  <script>
+    const cursor = document.getElementById('custom-cursor');
+    window.addEventListener('mousemove', function(e) {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    window.addEventListener('mousedown', function() {
+      cursor.style.background = 'rgba(37,150,190,0.8)';
+      cursor.style.width = '40px';
+      cursor.style.height = '40px';
+    });
+    window.addEventListener('mouseup', function() {
+      cursor.style.background = 'rgba(37,150,190,0.5)';
+      cursor.style.width = '32px';
+      cursor.style.height = '32px';
+    });
+  </script>
   <canvas class="experience"></canvas>
-  <audio src="sound.mp3" id="bgAudio"></audio>
   <div class="scrollTarget"></div>
   <div class="vignette-radial"></div>
 
@@ -57,31 +73,196 @@
 
 
 
-<p class="text-element division" data-text="Every loop leads forward...">
-  Every loop leads forward...
+<p class="text-element division" data-text="Design flows in loops...">
+  Design flows in loops...
 </p>
+
 
 <p class="text-element division3" data-text="BY MAHD.">
   BY MAHD
 </p>
 <p class="text-element division2" data-text="LOOP DIVISION">LOOP DIVISION</p>
 
+
+  <style>
+.footer-sound {
+  text-align: center;
+  position: fixed;
+  cursor: pointer;
+  z-index: 9999999; 
+  bottom: 30px;
+  left: 50px;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(37, 149, 190, 0);
+  border-radius: 50%;
+}
+
+.footer-sound .bars-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+
+/* You can adjust height/width above for bar group size within the circle */
+
+.sbar {
+  position: static !important; /* Remove absolute, use flex! */
+  margin: 0 1px;
+  height: 1px;
+  width: 2px;
+  background-color: #ffffff;
+  opacity: 1;
+  -webkit-animation-duration: 500ms;
+  -webkit-animation-play-state: running;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+
+  animation-duration: 500ms;
+  animation-play-state: running;
+  animation-direction: alternate;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Keep your animation and noAnim classes as before */
+.sbar.noAnim {
+   -webkit-animation: none !important;
+   -moz-animation: none !important;
+   -o-animation: none !important;
+   -ms-animation: none !important;
+   animation: none !important;
+}
+
+/* Individual bar animation delays, keep as before */
+.sbar#bar-1 {
+  -webkit-animation-name: danceHeight1;
+  -webkit-animation-delay: 0ms;
+  animation-name: danceHeight1;
+  animation-delay: 0ms;
+}
+.sbar#bar-2 {
+  -webkit-animation-name: danceHeight2;
+  -webkit-animation-delay: 300ms;
+  animation-name: danceHeight2;
+  animation-delay: 300ms;
+}
+.sbar#bar-3 {
+  -webkit-animation-name: danceHeight3;
+  -webkit-animation-delay: 600ms;
+  animation-name: danceHeight3;
+  animation-delay: 600ms;
+}
+.sbar#bar-4 {
+  -webkit-animation-name: danceHeight4;
+  -webkit-animation-delay: 900ms;
+  animation-name: danceHeight4;
+  animation-delay: 900ms;
+}
+/* ...keep your keyframes as before... */
+@-webkit-keyframes danceHeight1 {
+  from {
+    height: 1px;
+  }
+  to {
+    height: 10px;
+  }
+}
+@-webkit-keyframes danceHeight2 {
+  from {
+    height: 1px;
+  }
+  to {
+    height: 12px;
+  }
+}
+@-webkit-keyframes danceHeight3 {
+  from {
+    height: 1px;
+  }
+  to {
+    height: 14px;
+  }
+}
+@-webkit-keyframes danceHeight4 {
+  from {
+    height: 1px;
+  }
+  to {
+    height: 8px;
+  }
+}
+
+
+@keyframes danceHeight1 {
+  from {
+    height: 1px;
+  }
+  to {
+    height: 10px;
+  }
+}
+@keyframes danceHeight2 {
+  from {
+    height: 1px;
+  }
+  to {
+    height: 12px;
+  }
+}
+@keyframes danceHeight3 {
+  from {
+    height: 1px;
+  }
+  to {
+    height: 14px;
+  }
+}
+@keyframes danceHeight4 {
+  from {
+    height: 1px;
+  }
+  to {
+    height: 8px;
+  }
+}
+/* end sound anmation */ 
+
+
+  </style>
+
+
+  <div class="footer-sound">
+		<span id="bar-1" class="sbar"></span>
+		<span id="bar-2" class="sbar"></span>
+		<span id="bar-3" class="sbar"></span>
+		<span id="bar-4" class="sbar"></span>
+	</div>
+
+
 <!-- Header Section -->
-<nav class="navbar custom-navbar fixed-top text-white">
+<nav class="navbar custom-navbar fixed-top text-white" style="left: 20px; right: 20px; ">
   <div class="container-fluid d-flex justify-content-between align-items-center">
-    <a class="navbar-brand text-white fw-bold fs-4" href="#">
+    <a class="navbar-brand text-white" href="#">
       <svg class="infinity-brand" viewBox="0 0 200 100" width="80" height="40" aria-label="infinity loop">
         <path
           d="M30,50 C30,20 70,20 100,50 C130,80 170,80 170,50 C170,20 130,20 100,50 C70,80 30,80 30,50 Z"
           fill="none"
-          stroke="#2596be"
+          stroke="#ffffff"
           stroke-width="15"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
       </svg>
     </a>
-
     <!-- Custom Hamburger Button -->
     <button class="btn2 p-0 m-0" id="hamburgerToggle" aria-label="Toggle navigation" aria-expanded="false">
       <div class="icon"></div>
@@ -90,16 +271,6 @@
 
   <!-- Fullscreen Menu -->
   <div id="mobileMenu" aria-hidden="true" tabindex="-1">
-     <svg class="infinity-menu" viewBox="0 0 200 100" width="80" height="40" aria-label="infinity loop">
-        <path
-          d="M30,50 C30,20 70,20 100,50 C130,80 170,80 170,50 C170,20 130,20 100,50 C70,80 30,80 30,50 Z"
-          fill="none"
-          stroke="#2596be"
-          stroke-width="15"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
     <a class="nav-link" href="#">Home</a>
     <a class="nav-link" href="#">About</a>
     <a class="nav-link" href="#">Services</a>
@@ -144,5 +315,263 @@
 </script>
 
   <script src="script2.js"></script>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+
+<script>
+// Create APP namespace if not already present
+window.APP = window.APP || {};
+APP.sounds = {}; // Using an object for easier access by name
+APP.data = {
+  sounds: [
+    {
+      name: "ambient",
+      file: "assets/sounds/maxkomusic-space-heroes.mp3", // correct path to file
+      loop: true,
+      volume: 0.1,
+      html5: true
+    },
+    {
+      name: "click",
+      file: "assets/sounds/click.mp3",
+      loop: false,
+      volume: 1.0,
+      html5: true
+    },
+    {
+      name: "transition",
+      file: "assets/sounds/transition.mp3",
+      loop: false,
+      volume: 1.0,
+      html5: true
+    }
+  ]
+};
+
+// Initialize default sound settings
+$.each(APP.data.sounds, function (i, s) {
+  const sound = new Howl({
+    src: s.file,
+    loop: s.loop,
+    volume: s.volume,
+    html5: s.html5,
+    onend: function () {
+      console.log(`[Howler] Finished playing: ${s.name}`);
+    },
+    onload: function() {
+      console.log(`[Howler] Sound loaded: ${s.name}`);
+    },
+    onloaderror: function(id, err) {
+      console.error(`[Howler] Error loading sound ${s.name} (ID: ${id}):`, err);
+    }
+  });
+  APP.sounds[s.name] = sound;
+  // Store the initial volume for each sound
+  APP.sounds[s.name].initialVolume = s.volume;
+});
+
+// Global Mute Function
+APP.muteAll = function (ignoreGlobalSoundState) {
+  console.log("------------------------------------");
+  console.log("[MUTE] Muting all sounds...");
+  $(".footer-sound .sbar").addClass("noAnim");
+
+  for (const soundName in APP.sounds) {
+    if (APP.sounds.hasOwnProperty(soundName)) {
+      const sound = APP.sounds[soundName];
+      if (sound.playing()) {
+        console.log(`[MUTE] Fading sound "${soundName}" from ${sound.volume()} to 0`);
+        sound.fade(sound.volume(), 0, 500); // 500ms fade
+      } else {
+        console.log(`[MUTE] Sound "${soundName}" is not playing, not fading. Setting volume to 0.`);
+        sound.volume(0); // Ensure volume is 0 even if not playing
+      }
+    }
+  }
+
+  if (!ignoreGlobalSoundState) {
+    APP.soundOn = false;
+    console.log("[MUTE] APP.soundOn set to false.");
+  }
+  console.log("------------------------------------");
+};
+
+// Global Unmute Function
+APP.unMuteAll = function (ignoreGlobalSoundState) {
+  console.log("------------------------------------");
+  console.log("[UNMUTE] Unmuting all sounds...");
+  $(".footer-sound .sbar").removeClass("noAnim");
+
+  for (const soundName in APP.sounds) {
+    if (APP.sounds.hasOwnProperty(soundName)) {
+      const sound = APP.sounds[soundName];
+      console.log(`[UNMUTE] Fading sound "${soundName}" from ${sound.volume()} to ${sound.initialVolume}`);
+      sound.fade(sound.volume(), sound.initialVolume, 500); // 500ms fade
+
+      // If a sound was completely stopped (not just faded), ensure it plays again if it should
+      // This is crucial for ambient loops
+      if (!sound.playing() && sound.initialVolume > 0 && sound.loop()) {
+        console.log(`[UNMUTE] Sound "${soundName}" was not playing, restarting it.`);
+        sound.play();
+      }
+    }
+  }
+
+  if (!ignoreGlobalSoundState) {
+    APP.soundOn = true;
+    console.log("[UNMUTE] APP.soundOn set to true.");
+  }
+  console.log("------------------------------------");
+};
+
+// Initial state, assume sound is on until cookie says otherwise
+APP.soundOn = true;
+
+// Handle browser tab visibility
+(function () {
+  let hidden, visibilityChange;
+  if (typeof document.hidden !== "undefined") {
+    hidden = "hidden";
+    visibilityChange = "visibilitychange";
+  } else if (typeof document.mozHidden !== "undefined") {
+    hidden = "mozHidden";
+    visibilityChange = "mozvisibilitychange";
+  } else if (typeof document.msHidden !== "undefined") {
+    hidden = "msHidden";
+    visibilityChange = "msvisibilitychange";
+  } else if (typeof document.webkitHidden !== "undefined") {
+    hidden = "webkitHidden";
+    visibilityChange = "webkitvisibilitychange";
+  }
+
+  if (typeof document.addEventListener !== "undefined") { // Check if addEventListener is supported
+    document.addEventListener(visibilityChange, () => {
+      if (document[hidden]) {
+        APP.hidden = true;
+        console.log("[Visibility] Tab hidden, muting sounds (ignoreGlobalSoundState: true).");
+        APP.muteAll(true);
+      } else {
+        APP.hidden = false;
+        if (APP.soundOn) {
+          console.log("[Visibility] Tab visible, unmuting sounds (ignoreGlobalSoundState: true) if APP.soundOn is true.");
+          APP.unMuteAll(true);
+        } else {
+          console.log("[Visibility] Tab visible, but APP.soundOn is false, keeping muted.");
+        }
+      }
+    });
+  } else {
+      console.warn("[Visibility] document.addEventListener not supported, tab visibility handling skipped.");
+  }
+})();
+
+
+// Toggle sound on footer click
+$(".footer-sound").click(function () {
+  console.log("------------------------------------");
+  console.log("[CLICK] Footer sound control clicked!");
+  
+  // Only play click sound when unmuting
+  if (APP.soundOn) {
+    APP.muteAll();
+    setCookie("muted", 1);
+  } else {
+    APP.unMuteAll();
+    setCookie("muted", 0);
+    APP.sounds['click']?.play();
+  }
+  console.log(`[CLICK] APP.soundOn state after click: ${APP.soundOn}`);
+  console.log("------------------------------------");
+});
+
+// Optional: Auto-enable sounds on user interaction
+// This is CRUCIAL for mobile browsers and some desktop browsers to allow audio playback.
+// The ambient sound should start here.
+
+//Space Heroes by MaxKoMusic | https://maxkomusic.com/
+//Music promoted by https://www.free-stock-music.com
+//Creative Commons / Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+//https://creativecommons.org/licenses/by-sa/3.0/deed.en_US
+
+
+["body", ".background", "#webgl"].forEach(selector => {
+  $(selector).one('click', () => { // Use .one() to trigger only once
+    console.log(`[User Interaction] User clicked on "${selector}", attempting to unlock and play ambient sound.`);
+    if (APP.sounds["ambient"] && !APP.sounds["ambient"].playing()) {
+      APP.sounds["ambient"].play();
+      console.log("[User Interaction] Ambient sound play() called.");
+    } else if (APP.sounds["ambient"] && APP.sounds["ambient"].playing()) {
+      console.log("[User Interaction] Ambient sound already playing.");
+    } else {
+      console.warn("[User Interaction] Ambient sound object not found or not initialized.");
+    }
+  });
+});
+
+// Mouse tracking for interaction
+APP.mouse = new THREE.Vector2(0, 0);
+if (!APP.isMobile) {
+  window.addEventListener("mousemove", e => {
+    const x = e.clientX - window.innerWidth / 2;
+    const y = e.clientY - window.innerHeight / 2;
+    APP.mouse.set(x, y);
+  });
+}
+
+// Reel close button sound
+$('#reel .close').on('click', function () {
+  console.log("[Reel Close] Click sound played.");
+  // Only play click sound if not muted
+  if (APP.soundOn) {
+    APP.sounds["click"]?.play();
+  }
+  APP.hideReel?.();
+});
+
+// Helper: Set cookie
+function setCookie(name, value, days = 30) {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+}
+
+// Helper: Get cookie
+function getCookie(name) {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+// Auto-resume sound state based on cookie 
+$(document).ready(function () {
+  console.log("[Document Ready] Checking cookie for sound state.");
+  const muted = getCookie("muted");
+  if (muted === "1") {
+    console.log("[Document Ready] 'muted' cookie found (value: 1). Muting all sounds.");
+    APP.muteAll();
+    APP.soundOn = false; // Ensure APP.soundOn reflects the muted state
+  } else {
+    console.log("[Document Ready] 'muted' cookie not found or value is 0. Unmuting all sounds (if not already).");
+    // Ensure sounds are at their initial volumes if not explicitly muted by cookie
+    APP.unMuteAll();
+    APP.soundOn = true; // Ensure APP.soundOn reflects the unmuted state
+  }
+});
+
+
+document.body.addEventListener('click', function() {
+  if (APP.sounds['click']) {
+    APP.sounds['click'].play();
+  }
+});
+
+
+</script>
+
 </body>
 </html>

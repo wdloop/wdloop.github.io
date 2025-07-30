@@ -1,0 +1,9 @@
+<!-- sample rectangle -->
+<svg class="infinity" viewBox="0 0 200 100">
+              <path d="M30,50 C30,20 70,20 100,50 C130,80 170,80 170,50 C170,20 130,20 100,50 C70,80 30,80 30,50 Z"
+                    fill="none"
+                    stroke="rgb(192, 255, 20)"
+                    stroke-width="15"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
