@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderer.setSize(ww, wh);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x194794, 0.01, 100);
+  scene.fog = new THREE.Fog(0xffffff, 0.01, 100);
 
   const clock = new THREE.Clock();
 
@@ -64,8 +64,8 @@ const tunnelShaderMaterial = new THREE.ShaderMaterial({
     time: { value: 0 },
     texture1: { value: texture },
     lightDirection: { value: new THREE.Vector3(1, 1, 1).normalize() },
-    ambientIntensity: { value: 0.1 },  // Soft ambient light
-    diffuseIntensity: { value: 0.70 },  // Control main light
+    ambientIntensity: { value: 0.6 },  // Soft ambient light
+    diffuseIntensity: { value: 0.7 },  // Control main light
     gammaCorrection: { value: 1.1 }    // sRGB correction
   },
   vertexShader: `
@@ -139,7 +139,7 @@ tunnelShaderMaterial.uniforms.lightDirection.value.set(1, 1, 1).normalize();
   }
 
   const particleMaterial = new THREE.PointsMaterial({
-    color: 0xa1ff14,
+    color: 0x2596be,
     size: 0.7,
     map: spikeyTexture,
     transparent: true,
@@ -152,7 +152,7 @@ tunnelShaderMaterial.uniforms.lightDirection.value.set(1, 1, 1).normalize();
   const particleSystem3 = new THREE.Points(particles3, particleMaterial);
   scene.add(particleSystem1, particleSystem2, particleSystem3);
 
-  const pointLight = new THREE.PointLight(0xa1ff14, 0.5, 4, 0);
+  const pointLight = new THREE.PointLight(0x2596be, 0.5, 4, 0);
   scene.add(pointLight);
 
   const textMeshes = [];
@@ -192,45 +192,104 @@ tunnelShaderMaterial.uniforms.lightDirection.value.set(1, 1, 1).normalize();
   window.addEventListener("keydown", unlockAudioPlayback);
 
   // Labels
-  const triggeredTextLabels = new Set();
-  const textsData = [
-    { text: 'Presence', perc: 0.71 },
-    { text: 'Resonance', perc: 0.77 },
-    { text: 'Rhythm', perc: 0.83 },
-    { text: 'Cycle', perc: 0.89 },
-  ];
+const triggeredTextLabels = new Set();
 
-  loader.load('helvetiker_bold.typeface.json', font => {
-    textsData.forEach(({ text, perc }) => {
-      const geometry = new THREE.TextGeometry(text, {
-        font,
-        size: 0.5,
-        height: 0,
-        curveSegments: 5,
-        bevelEnabled: false,
-      });
-      geometry.computeBoundingBox();
-      geometry.center();
 
-      const material = new THREE.MeshPhysicalMaterial({
-        color: 0xffffff,
-        emissive: 0xffffff,
-        metalness: 0,
-        roughness: 0,
-      });
+const textsData = [
+  { text: 'Design\nflows in\nloops.', perc: 0.04, style: 'h1' },
+  { text: 'Every loop leads forward.', perc: 0.12, style: 'p' },
+  { text: 'Every pixel has purpose.', perc: 0.2, style: 'p' },
+  { text: 'Not just seen.\nFelt.', perc: 0.28, style: 'p' },
+  { text: 'We shape silence into meaning.', perc: 0.36, style: 'p' },
+  { text: 'Time fades.\nDesign echoes.', perc: 0.44, style: 'p' },
+  { text: 'Because true design doesn’t stop.\nIt pulses.\nIt returns.\nIt loops.', perc: 0.52, style: 'p' },
+  { text: 'Our mission is to uncover the unseen.\nTo design not what is expected, but what is necessary.', perc: 0.6, style: 'p' },
+  { text: 'LOOP is not a destination.\nIt’s a rhythm.\nA living dialogue between brand and soul.', perc: 0.68, style: 'p' },
+  { text: 'In a world obsessed with outcomes,\n we focus on the essence\nthe flow, the feeling, \nthe forward motion.', perc: 0.80, style: 'p' },
+  { text: 'Each project is a loop in itself: beginning with intent,\n shaped by insight, and returning to reflection.', perc: 0.84, style: 'p' },
+  { text: 'We do not simply build websites—we sculpt digital landscapes, \nwhere form and function engage in quiet conversation.', perc: 0.92, style: 'p' },
+  { text: 'At Loop, we believe design is a continuous journey \nA cycle where creativity and purpose intertwine endlessly.', perc: 0.98, style: 'p' },
+];
 
-      const mesh = new THREE.Mesh(geometry, material);
-      const position = path.getPointAt(perc);
-      const lookAhead = path.getPointAt((perc + 0.01) % 1);
 
-      mesh.position.copy(position);
-      mesh.lookAt(lookAhead);
-      mesh.rotateY(Math.PI);
 
-      scene.add(mesh);
-      textMeshes.push(mesh);
-    });
+const textStyles = {
+  h1: { size: 0.5, font: 'Boldonse_Regular.json', color: 0xffffff },  // ← white
+  h2: { size: 0.2, font: 'Boldonse_Regular.json', color: 0xffffff },
+  p:  { size: 0.15, font: 'Boldonse_Regular.json', color: 0xffffff },
+};
+
+
+// Make sure you have these font files in your public path or server
+
+const fontPromises = {};
+
+// Load fonts in parallel and cache them
+const uniqueFonts = new Set(Object.values(textStyles).map(style => style.font));
+uniqueFonts.forEach(fontFile => {
+  fontPromises[fontFile] = new Promise((resolve, reject) => {
+    loader.load(fontFile, resolve, undefined, reject);
   });
+});
+
+// Once all fonts are loaded
+Promise.all(Object.values(fontPromises)).then(fonts => {
+  const fontMap = {};
+  Object.keys(fontPromises).forEach((key, i) => {
+    fontMap[key] = fonts[i];
+  });
+
+textsData.forEach(({ text, perc, style }) => {
+  const styleDef = textStyles[style || 'p'];
+  const font = fontMap[styleDef.font];
+
+  const geometry = new THREE.TextGeometry(text, {
+    font: font,
+    size: styleDef.size,
+    height: 0,
+    curveSegments: 2,
+    bevelEnabled: false,
+  });
+
+  geometry.computeBoundingBox();
+  const bbox = geometry.boundingBox;
+
+  // Calculate vertical height of the text block
+  const textHeight = bbox.max.y - bbox.min.y;
+
+  // Center geometry vertically and horizontally
+  geometry.translate(0, -textHeight / 2, 0);  // vertical centering
+  geometry.center();                           // horizontal centering
+
+const materialtext = new THREE.MeshPhysicalMaterial({
+  color: styleDef.color,
+  emissive: 0xffffff,
+  metalness: 0,
+  roughness: 0.5,
+});
+
+
+
+  const mesh = new THREE.Mesh(geometry, materialtext);
+
+  // Position on the curve
+  const position = path.getPointAt(perc);
+  const lookAhead = path.getPointAt((perc + 0.01) % 1);
+
+  mesh.position.copy(position);
+  mesh.lookAt(lookAhead);
+  mesh.rotateY(Math.PI);
+
+  scene.add(mesh);
+  textMeshes.push(mesh);
+});
+
+}).catch(err => {
+  console.error('Failed to load fonts:', err);
+});
+
+
+
 
   let cameraRotationProxyX = Math.PI;
   let cameraRotationProxyY = 0.0;
@@ -297,7 +356,9 @@ const outViewTarget = new THREE.Vector3(0, 0, 0); // Look at scene center
   composer.setSize(ww, wh);
   const renderPass = new THREE.RenderPass(scene, camera);
   composer.addPass(renderPass)
-  const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(ww, wh), 0.99, 0.4, 0);
+const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(ww, wh), 1, 1, 0);
+
+
   bloomPass.renderToScreen = true;
   composer.addPass(bloomPass);
 
@@ -307,24 +368,7 @@ const outViewTarget = new THREE.Vector3(0, 0, 0); // Look at scene center
   let cinematicTimeline = gsap.timeline({ paused: true });
   const theEnd = document.getElementById("theend");
 
-  function initHorizontalScroll() {
-    const controller = new ScrollMagic.Controller();
-    const horizontalSlide = new TimelineMax()
-      .to("#js-slideContainer", 1, { x: "-20%" })
-      .to("#js-slideContainer", 1, { x: "-40%" })
-      .to("#js-slideContainer", 1, { x: "-60%" })
-      .to("#js-slideContainer", 1, { x: "-80%" });
-
-    new ScrollMagic.Scene({
-      triggerElement: "#js-wrapper",
-      triggerHook: "onLeave",
-      duration: "400%"
-    })
-      .setPin("#js-wrapper")
-      .setTween(horizontalSlide)
-      .addTo(controller);
-  }
-
+ 
   cinematicTimeline
     .to(cameraGroup.position, {
       x: 150,
@@ -343,7 +387,6 @@ const outViewTarget = new THREE.Vector3(0, 0, 0); // Look at scene center
       ease: "power2.out",
       onComplete: () => {
         theEnd.classList.add("show");
-        initHorizontalScroll();
       }
     }, 2);
 
@@ -404,3 +447,4 @@ const outViewTarget = new THREE.Vector3(0, 0, 0); // Look at scene center
     });
   }
 });
+
