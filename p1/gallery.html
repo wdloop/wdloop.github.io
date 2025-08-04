@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaukia Alhassan - Professional Female Model</title>
+    <meta name="description" content="Professional Model/Fashion Artist in St. George, Utah">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    
+    <style>
+        
+        /* Gallery Sections */
+        .gallery-section {
+            position: relative;
+            padding: 150px 0;
+            overflow: hidden;
+        }
+        
+        .g_section-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(5rem, 15vw, 12rem);
+            font-weight: 900;
+            opacity: 0.5;
+            white-space: nowrap;
+            z-index: 99;
+            pointer-events: none;
+        }
+        
+        /* Gallery Grid */
+        .gallery-grid {
+            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 50px;
+            z-index: 2;
+        }
+        
+        .gallery-row {
+            display: flex;
+            margin-bottom: 30px;
+            gap: 30px;
+        }
+        
+        /* Gallery Items */
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            will-change: transform;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            filter: grayscale(0%);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+        
+        .gallery-item-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-item-info {
+            opacity: 1;
+        }
+        
+        .gallery-item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .gallery-item-category {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+        
+        /* Item Sizes */
+        .item-small {
+            flex: 1;
+            height: 300px;
+        }
+        
+        .item-medium {
+            flex: 1.5;
+            height: 400px;
+        }
+        
+        .item-large {
+            flex: 2;
+            height: 500px;
+        }
+        
+        .item-wide {
+            flex: 2;
+            height: 300px;
+        }
+        
+        /* Staggered Layout */
+        .stagger-left {
+            margin-left: 100px;
+        }
+        
+        .stagger-right {
+            margin-right: 100px;
+        }
+        
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: var(--secondary-color);
+            cursor: pointer;
+            z-index: 10001;
+        }
+        
+        .lightbox-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--secondary-color);
+        }
+        
+        .lightbox-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .lightbox-category {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .stagger-left {
+                margin-left: 50px;
+            }
+            
+            .stagger-right {
+                margin-right: 50px;
+            }
+        }
+        
+        @media (max-width: 768px) {          
+            .gallery-row {
+                flex-direction: column;
+            }
+            
+            .item-small, .item-medium, .item-large, .item-wide {
+                flex: 1;
+                height: 300px;
+            }
+            
+            .stagger-left, .stagger-right {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+<div class="preloader">
+    <div class="preloader-content">
+        <div class="preloader-text">
+            <span class="char">S</span>
+            <span class="char">H</span>
+            <span class="char">A</span>
+            <span class="char">U</span>
+            <span class="char">K</span>
+            <span class="char">I</span>
+            <span class="char">A</span>
+            <span class="space">&nbsp;</span>
+            <span class="char">A</span>
+            <span class="char">L</span>
+            <span class="char">H</span>
+            <span class="char">A</span>
+            <span class="char">S</span>
+            <span class="char">S</span>
+            <span class="char">A</span>
+            <span class="char">N</span>
+        </div>
+        <div class="preloader-bar">
+            <div class="preloader-progress"></div>
+        </div>
+    </div>
+</div>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">SHAUKIA A.</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#contact">CONTACT</a>
+        </div>
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    
+    <!-- Gallery Section 1 -->
+    <div class="gallery-section">
+        <h2 class="g_section-title">FASHION</h2>
+        <div class="gallery-grid">
+            <div class="gallery-row">
+                <div class="gallery-item item-medium stagger-left">
+                    <img src="assets/img/1.jpg" alt="Fashion Shoot">
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">Urban Elegance</h3>
+                        <p class="gallery-item-category">Fashion</p>
+                    </div>
+                </div>
+                <div class="gallery-item item-small">
+                    <img src="assets/img/2.jpg" alt="Fashion Shoot">
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">Street Style</h3>
+                        <p class="gallery-item-category">Fashion</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-row">
+                <div class="gallery-item item-large stagger-right">
+                    <img src="assets/img/3.jpg" alt="Fashion Shoot">
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">Runway Ready</h3>
+                        <p class="gallery-item-category">Fashion</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gallery Section 2 -->
+    <div class="gallery-section">
+        <h2 class="g_section-title">PORTRAIT</h2>
+        <div class="gallery-grid">
+            <div class="gallery-row">
+                <div class="gallery-item item-wide stagger-left">
+                    <img src="assets/img/4.jpg" alt="Portrait">
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">Natural Beauty</h3>
+                        <p class="gallery-item-category">Portrait</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-row">
+                <div class="gallery-item item-small">
+                    <img src="assets/img/5.jpg" alt="Portrait">
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">Studio Session</h3>
+                        <p class="gallery-item-category">Portrait</p>
+                    </div>
+                </div>
+                <div class="gallery-item item-medium stagger-right">
+                    <img src="assets/img/3.jpg" alt="Portrait">
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">Golden Hour</h3>
+                        <p class="gallery-item-category">Portrait</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gallery Section 3 -->
+    <div class="gallery-section">
+        <h2 class="g_section-title">EDITORIAL</h2>
+        <div class="gallery-grid">
+            <div class="gallery-row">
+                <div class="gallery-item item-large stagger-left">
+                    <img src="assets/img/2.jpg" alt="Editorial">
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">Magazine Feature</h3>
+                        <p class="gallery-item-category">Editorial</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-row">
+                <div class="gallery-item item-medium">
+                    <img src="assets/img/5.jpg" alt="Editorial">
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">High Fashion</h3>
+                        <p class="gallery-item-category">Editorial</p>
+                    </div>
+                </div>
+                <div class="gallery-item item-small stagger-right">
+                    <img src="assets/img/1.jpg" alt="Editorial">
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">Artistic Vision</h3>
+                        <p class="gallery-item-category">Editorial</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Section -->
+    <footer class="footer" id="contact" style="z-index: 99 !important;">
+        <h2 class="footer-title">WORK WITH ME</h2>
+        <p class="footer-subtitle">
+            If you have a <strong>General</strong> Or <strong>Project</strong> enquiry,<br>
+            please drop me an email — <strong>AVAILABLE NOW</strong>.
+        </p>
+
+        <div class="footer-arrow">
+            <div class="arrow">
+                <img
+                src="assets/img/arrow.svg"
+                loading="lazy"
+                width="40"
+                height="40"
+                style="transform: translate3d(0px, -15.3048%, 0px) scale3d(1, 1, 1); transform-style: preserve-3d; will-change: transform;"
+                alt="arrow-pointing-down"
+                class="arrow-one-ap"
+                />
+            </div>
+        </div>
+        
+        <a href="mailto:hello@shaukia.com" class="footer-email">SEND AN EMAIL</a>
+        
+        <div class="footer-bottom">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>            
+            <div class="footer-credit">
+                SHAUKIA ALHASSAN © 2023
+            </div>
+            
+            <div class="footer-credit">
+                DESIGNED & DEVELOPED BY YOUR NAME
+            </div>
+        </div>
+    </footer>  
+<script src="assets/js/scripte.js"></script>
+    <div class="lightbox">
+        <div class="lightbox-close">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-image">
+            <div class="lightbox-info">
+                <h3 class="lightbox-title"></h3>
+                <p class="lightbox-category"></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
