@@ -5,29 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LOOP WD</title>
   
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@100..900&display=swap" rel="stylesheet">
   
+  <!-- JS Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Draggable.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/CustomEase.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/InertiaPlugin.min.js"></script>
-
-
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&display=swap" rel="stylesheet">
-
-
-  
+  <script src="https://unpkg.com/gsap@3/dist/TextPlugin.min.js"></script>
   <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68819/EffectComposer.js"></script>
   <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68819/RenderPass.js"></script>
   <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68819/ShaderPass.js"></script>
@@ -38,370 +33,185 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/geometries/TextGeometry.js"></script>
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"></script>
-
-<style>
-  #preloader-overlay {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #19232677;
-  z-index: 999999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity .5s, visibility .5s;
-  
-}
-#preloader-overlay.hide {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-}
-.preloader-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.5rem;
-}
-.preloader-btn {
-  padding: .8em 1em;
-  font-size: 1.2rem;
-  border: none;
-  background: transparent;
-  color: #fff;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  font-family: "Bitcount Grid Single", system-ui, sans-serif;
-  transition: background 0.2s;
-}
-.preloader-btn:hover, .preloader-btn:focus {
-  color: #ffffff;
-  font-size: medium;
-
-}
-
-
-
-
-
-/* HTML: <div class="loader"></div> */
-
-</style>
-
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"></script>
 </head>
 <body>
-  
-  <!-- Add this at the start of your <body> -->
-<div id="preloader-overlay">
-  <div class="preloader-content">
-    <div class="loader-icon show">
-<svg class="infinity-brand" viewBox="0 0 200 100" width="80" height="40" aria-label="infinity loop">
-        <path
-          d="M30,50 C30,20 70,20 100,50 C130,80 170,80 170,50 C170,20 130,20 100,50 C70,80 30,80 30,50 Z"
-          fill="none"
-          stroke="#ffffff"
-          stroke-width="15"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-      <button id="start-btn" class="preloader-btn">Start</button>
-    </div>
+
+
+  <!-- Main Content -->
+  <div id="wrapper">
+    <div id="content">
+      <!-- Custom Cursor -->
+      <div id="custom-cursor"></div>
+      
+      <!-- Canvas for Three.js -->
+      <canvas class="experience"></canvas>
+      
+      <!-- Scroll Target for ScrollTrigger -->
+      <div class="scrollTarget"></div>
+      
+      <!-- Vignette Effect -->
+      <div class="vignette-radial"></div>
+
+      
+      <!-- Sound Toggle -->
+      <div class="footer-sound">
+        <span id="bar-1" class="sbar"></span>
+        <span id="bar-2" class="sbar"></span>
+        <span id="bar-3" class="sbar"></span>
+        <span id="bar-4" class="sbar"></span>
+      </div>
+      
+      <!-- Navigation 
+      <nav class="navbar custom-navbar fixed-top text-white">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <a class="navbar-brand text-white" href="#">
+            <svg class="infinity-brand" viewBox="0 0 200 100" width="80" height="40" aria-label="infinity loop">
+              <path
+                d="M30,50 C30,20 70,20 100,50 C130,80 170,80 170,50 C170,20 130,20 100,50 C70,80 30,80 30,50 Z"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="15"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>-->
+          <!-- Custom Hamburger Button 
+          <button class="btn2 p-0 m-0" id="hamburgerToggle" aria-label="Toggle navigation" aria-expanded="false">
+            <div class="icon"></div>
+          </button> 
+        </div> -->
+        <!-- Fullscreen Menu 
+        <div id="mobileMenu" aria-hidden="true" tabindex="-1">
+          <a class="nav-link" href=".">Home</a>
+          <a class="nav-link" href="">About</a>
+          <a class="nav-link" href="#">Services</a>
+          <a class="nav-link" href="#">Contact</a>
+        </div>
+      </nav>-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<style>
+     /* Paralax Effect On GSAP **********************************/
+    /* header ********/
+    .header {
+      position: relative;
+      display: flex;
+      padding: 0 70px;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      font-family: "Boldonse", sans-serif;
+    }
     
-  </div>
-</div>
+    
+    .title {
+      position: relative;
+      margin: 0;
+      font-size: 85px;
+      text-align: center;
+      color: #fff;
+      text-transform: uppercase;
+      mix-blend-mode: difference;
+      z-index: 2;
+    }
+    
+    
+    .title_paralax {
+      display: inline-block;
+      will-change: transform;
+    }
+    
+    .title .stroke {
+      display: inline-block;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--pr-color);
+    }
+    .title .stroke {
+      display: inline-block;
+      color: transparent;
+      -webkit-text-stroke: 1px #fff;
+    }
+    
+</style>
 
+    <header class="header">
+      <h1 class="title" data-splitting><span class="title_paralax">LOOP</span><span class="stroke">WebDesing</span></h1>
+    </header>
 <script>
-  // Place after your loader and before APP.init()
-document.addEventListener('DOMContentLoaded', function() {
-  const preloader = document.getElementById('preloader-overlay');
-  const startBtn = document.getElementById('start-btn');
-  startBtn.addEventListener('click', () => {
-    preloader.classList.add('hide');
-    setTimeout(() => {
-      preloader.style.display = 'none';
-      // Now start your app!
-      if (typeof APP !== "undefined" && typeof APP.init === "function") {
-        APP.init();
+        // Header parallax
+      function header() {
+        gsap.to('.title_paralax', {
+          scrollTrigger: {
+            trigger: '.header',
+            start: 'top top',
+            scrub: 1.9
+          },
+          yPercent: -200,
+          xPercent: -20
+        });
+        
+        gsap.to('.header .stroke', {
+          scrollTrigger: {
+            trigger: '.header',
+            start: 'top top',
+            scrub: 1.9
+          },
+          xPercent: 50,
+          zPercent: 20,
+        });
+        
+
       }
-    }, 500);
-    // Optional: Play transition sound
-    if (window.APP && APP.sounds && APP.sounds.transition) {
-      APP.sounds.transition.play();
-    }
-  });
-  // Accessibility: allow Enter/Space
-  startBtn.addEventListener('keydown', function(e){
-    if(e.key === "Enter" || e.key === " ") {
-      startBtn.click();
-    }
-  });
-});
+      header();
+
 </script>
-
-  <div id="custom-cursor"></div>
-  <script>
-    const cursor = document.getElementById('custom-cursor');
-    window.addEventListener('mousemove', function(e) {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
-    window.addEventListener('mousedown', function() {
-      cursor.style.background = 'rgba(37,150,190,0.8)';
-      cursor.style.width = '40px';
-      cursor.style.height = '40px';
-    });
-    window.addEventListener('mouseup', function() {
-      cursor.style.background = 'rgba(37,150,190,0.5)';
-      cursor.style.width = '32px';
-      cursor.style.height = '32px';
-    });
-  </script>
-  <canvas class="experience"></canvas>
-  <div class="scrollTarget"></div>
-  <div class="vignette-radial"></div>
-
-
-
-
-
-
-<p class="text-element division" data-text="Design flows in loops...">
-  Design flows in loops...
-</p>
-
-
-<p class="text-element division3" data-text="BY MAHD.">
-  BY MAHD
-</p>
-<p class="text-element division2" data-text="LOOP DIVISION">LOOP DIVISION</p>
-
-
-  <style>
-.footer-sound {
-  text-align: center;
-  position: fixed;
-  cursor: pointer;
-  z-index: 9999999; 
-  bottom: 30px;
-  left: 50px;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(37, 149, 190, 0);
-  border-radius: 50%;
-}
-
-.footer-sound .bars-container {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: center;
-  height: 24px;
-  width: 24px;
-  position: relative;
-}
-
-/* You can adjust height/width above for bar group size within the circle */
-
-.sbar {
-  position: static !important; /* Remove absolute, use flex! */
-  margin: 0 1px;
-  height: 1px;
-  width: 2px;
-  background-color: #ffffff;
-  opacity: 1;
-  -webkit-animation-duration: 500ms;
-  -webkit-animation-play-state: running;
-  -webkit-animation-direction: alternate;
-  -webkit-animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-
-  animation-duration: 500ms;
-  animation-play-state: running;
-  animation-direction: alternate;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-/* Keep your animation and noAnim classes as before */
-.sbar.noAnim {
-   -webkit-animation: none !important;
-   -moz-animation: none !important;
-   -o-animation: none !important;
-   -ms-animation: none !important;
-   animation: none !important;
-}
-
-/* Individual bar animation delays, keep as before */
-.sbar#bar-1 {
-  -webkit-animation-name: danceHeight1;
-  -webkit-animation-delay: 0ms;
-  animation-name: danceHeight1;
-  animation-delay: 0ms;
-}
-.sbar#bar-2 {
-  -webkit-animation-name: danceHeight2;
-  -webkit-animation-delay: 300ms;
-  animation-name: danceHeight2;
-  animation-delay: 300ms;
-}
-.sbar#bar-3 {
-  -webkit-animation-name: danceHeight3;
-  -webkit-animation-delay: 600ms;
-  animation-name: danceHeight3;
-  animation-delay: 600ms;
-}
-.sbar#bar-4 {
-  -webkit-animation-name: danceHeight4;
-  -webkit-animation-delay: 900ms;
-  animation-name: danceHeight4;
-  animation-delay: 900ms;
-}
-/* ...keep your keyframes as before... */
-@-webkit-keyframes danceHeight1 {
-  from {
-    height: 1px;
-  }
-  to {
-    height: 10px;
-  }
-}
-@-webkit-keyframes danceHeight2 {
-  from {
-    height: 1px;
-  }
-  to {
-    height: 12px;
-  }
-}
-@-webkit-keyframes danceHeight3 {
-  from {
-    height: 1px;
-  }
-  to {
-    height: 14px;
-  }
-}
-@-webkit-keyframes danceHeight4 {
-  from {
-    height: 1px;
-  }
-  to {
-    height: 8px;
-  }
-}
-
-
-@keyframes danceHeight1 {
-  from {
-    height: 1px;
-  }
-  to {
-    height: 10px;
-  }
-}
-@keyframes danceHeight2 {
-  from {
-    height: 1px;
-  }
-  to {
-    height: 12px;
-  }
-}
-@keyframes danceHeight3 {
-  from {
-    height: 1px;
-  }
-  to {
-    height: 14px;
-  }
-}
-@keyframes danceHeight4 {
-  from {
-    height: 1px;
-  }
-  to {
-    height: 8px;
-  }
-}
-/* end sound anmation */ 
-
-
-  </style>
-
-
-  <div class="footer-sound">
-		<span id="bar-1" class="sbar"></span>
-		<span id="bar-2" class="sbar"></span>
-		<span id="bar-3" class="sbar"></span>
-		<span id="bar-4" class="sbar"></span>
-	</div>
-
-
-<!-- Header Section -->
-<nav class="navbar custom-navbar fixed-top text-white" style="left: 20px; right: 20px; ">
-  <div class="container-fluid d-flex justify-content-between align-items-center">
-    <a class="navbar-brand text-white" href="#">
-      <svg class="infinity-brand" viewBox="0 0 200 100" width="80" height="40" aria-label="infinity loop">
-        <path
-          d="M30,50 C30,20 70,20 100,50 C130,80 170,80 170,50 C170,20 130,20 100,50 C70,80 30,80 30,50 Z"
-          fill="none"
-          stroke="#ffffff"
-          stroke-width="15"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-    </a>
-    <!-- Custom Hamburger Button -->
-    <button class="btn2 p-0 m-0" id="hamburgerToggle" aria-label="Toggle navigation" aria-expanded="false">
-      <div class="icon"></div>
-    </button>
-  </div>
-
-  <!-- Fullscreen Menu -->
-  <div id="mobileMenu" aria-hidden="true" tabindex="-1">
-    <a class="nav-link" href="#">Home</a>
-    <a class="nav-link" href="#">About</a>
-    <a class="nav-link" href="#">Services</a>
-    <a class="nav-link" href="#">Contact</a>
-  </div>
-</nav>
-
-
-<footer id="theend">
-  <div class="footer-content">
-    <div class="text-element-footer">
-      <p>© 2025 Loop. All rights reserved.</p>
-    </div>
-    <div class="footer-links">
-      <a class="text-element-footer" href="#">Privacy Policy</a>
-      <a class="text-element-footer" href="#">Terms of Service</a>
+      <!-- The End Section -->
+      <footer id="theend" class="text-light py-4">
+        <div class="container">
+          <div class="row text-center align-items-center">
+            <div class="footer-links d-flex flex-column flex-md-row justify-content-md-end align-items-center">
+              <a class="text-element-footer" href="#">webdesignloop.contact@gmail.com</a>
+              <a class="text-element-footer" href="#">+212678362534</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   </div>
-</footer>
 
-
-
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <script src="script2.js"></script>
+  
 <script>
+  // Custom cursor functionality
+  const cursor = document.getElementById('custom-cursor');
+  window.addEventListener('mousemove', function(e) {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  window.addEventListener('mousedown', function() {
+    cursor.style.background = 'rgba(37,150,190,0.8)';
+    cursor.style.width = '40px';
+    cursor.style.height = '40px';
+  });
+  window.addEventListener('mouseup', function() {
+    cursor.style.background = 'rgba(37,150,190,0.5)';
+    cursor.style.width = '32px';
+    cursor.style.height = '32px';
+  });
+  
+  // Mobile menu functionality
   const toggleBtn = document.getElementById("hamburgerToggle");
   const mobileMenu = document.getElementById("mobileMenu");
-
   toggleBtn.addEventListener("click", () => {
     const isOpen = toggleBtn.classList.toggle("open");
     mobileMenu.classList.toggle("open");
-
     // Accessibility attributes
     toggleBtn.setAttribute("aria-expanded", isOpen);
     mobileMenu.setAttribute("aria-hidden", !isOpen);
-
     // Focus management for keyboard users
     if (isOpen) {
       mobileMenu.querySelector("a").focus();
@@ -410,11 +220,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
-  <script src="script2.js"></script>
-  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
-
-
 </body>
 </html>
