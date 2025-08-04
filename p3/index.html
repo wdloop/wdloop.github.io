@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaukia Alhassan Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+    
+    <!-- GSAP Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/TextPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="all-content" id="all-content">
+        <nav class="navigation" id="navigation">
+            <div class="navigation__container">
+                <div class="navigation__logo">SHAUKIA ALHASSAN</div>
+                <div class="navigation__center">
+                    <div class="navigation__menu">
+                        <button class="menu-btn" id="menu-btn">+</button>
+                    </div>
+                </div>
+                <div class="navigation__right">
+                    <a href="#contact" class="contact-link">Contact</a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="dropdown" id="dropdown">
+            <div class="dropdown__content">
+                <div class="dropdown__menu">
+                    <a href="#about" class="dropdown__button">About Me</a>
+                    <a href="#portfolio" class="dropdown__button">Personal Portfolio</a>
+                    <a href="#work" class="dropdown__button">Work</a>
+                    <a href="#contact" class="dropdown__button">Connect</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="wrapper">
+        <main id="main-content">
+            <header class="heading" aria-hidden="true">
+                <p>SHAUKIA</p>
+                <div class="text-container">
+                    <p>ALHASSAN</p>
+                    <p data-speed="0.95">ALHASSAN</p>
+                    <p data-speed="0.9">ALHASSAN</p>
+                    <p data-speed="0.85">ALHASSAN</p>
+                </div>
+            </header>
+            
+            <section class="image-grid container">
+                <div class="image_cont" data-speed="0.8">
+                    <img src="assets/img/2.jpg" alt="Fashion portfolio image 1">
+                </div>
+                <div class="image_cont" data-speed="0.9">
+                    <img src="assets/img/3.jpg" alt="Fashion portfolio image 2">
+                </div>
+                <div class="image_cont" data-speed="1.4">
+                    <img src="assets/img/4.jpg" alt="Fashion portfolio image 3">
+                </div>
+                <div class="image_cont" data-speed="1.6">
+                    <img src="assets/img/2.jpg" alt="Fashion portfolio image 4">
+                </div>
+                <div class="image_cont" data-speed="1.6">
+                    <img src="assets/img/2.jpg" alt="Fashion portfolio image 5">
+                </div>
+            </section>
+            
+            <section id="about" class="title container flow--lg">
+                <h1><span class="eyebrow" aria-hidden="true">I'm </span>SHAUKIA ALHASSAN</h1>
+                <p>Currently a Model & Student that's studying to be an accountant at Utah Tech University.
+                Since my childhood I've always been passionate about clothes and fashion. An interest that was influenced by mom being a seamstress and I would watch her sew beautiful pieces for her clients.
+                I have always believed that what I wear can have an impact on my mood and I am hoping to transition my portfolio to modest modeling which will lead me into becoming a full-time Muslim model.
+                My mission is to represent the Muslim community through fashion and modeling.</p>
+            </section>
+            
+            <section class="v-center">
+                <div class="parallax-slab">
+                    <img data-speed="auto" src="assets/img/4.jpg" alt="Fashion modeling showcase">
+                </div>
+            </section>
+
+            
+            <section id="work">
+                <h1><span class="eyebrow" aria-hidden="true"></span>MY WORK</h1>
+                
+                <section id="portfolio" class="image-grid-4 container">
+                    <div class="image-item">
+                        <div class="ripple-container">
+                            <img src="assets/img/1.jpg" alt="Fashion modeling portfolio">
+                            <div class="overlay">
+                                <div class="text-content">
+                                    <h3>Fashion Portfolio</h3>
+                                    <p>Exploring modest fashion and cultural representation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-item">
+                        <div class="ripple-container">
+                            <img src="assets/img/2.jpg" alt="Cultural fashion expression">
+                            <div class="overlay">
+                                <div class="text-content">
+                                    <h3>Cultural Expression</h3>
+                                    <p>Representing Muslim identity through contemporary fashion</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-item">
+                        <div class="ripple-container">
+                            <img src="assets/img/5.jpg" alt="Modest fashion modeling">
+                            <div class="overlay">
+                                <div class="text-content">
+                                    <h3>Modest Modeling</h3>
+                                    <p>Transitioning to full-time modest fashion representation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-item">
+                        <div class="ripple-container">
+                            <img src="assets/img/2.jpg" alt="Community fashion impact">
+                            <div class="overlay">
+                                <div class="text-content">
+                                    <h3>Community Impact</h3>
+                                    <p>Inspiring representation in the fashion industry</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+            
+            <div class="marquee">
+                <div class="marquee-content">
+                    <span class="marquee-text">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text">PERSONAL PORTFOLIO</span>
+                </div>
+            </div>
+            
+            <section class="v-center">
+                <div class="parallax-slab">
+                    <img data-speed="auto" src="assets/img/1.jpg" alt="Gallery preview">
+                    <div class="gallery-button-container">
+                        <a href="gallery.html" class="gallery-button">View My Gallery</a>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="marquee_invers">
+                <div class="marquee-content_invers">
+                    <span class="marquee-text_invers">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text_invers">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text_invers">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text_invers">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text_invers">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text_invers">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text_invers">PERSONAL PORTFOLIO</span>
+                    <span class="marquee-text_invers">PERSONAL PORTFOLIO</span>
+                </div>
+            </div>
+            
+            <!-- Footer Section -->
+            <footer id="contact" class="footer">
+                <h2 class="footer-title">WORK WITH ME</h2>
+                <p class="footer-subtitle">
+                    If you have a <strong>General</strong> Or <strong>Project</strong> enquiry,<br>
+                    please drop me an email — <strong>AVAILABLE NOW</strong>.
+                </p>
+                <div class="footer-arrow">
+                    <div class="arrow">
+                        <img src="assets/img/arrow.svg" loading="lazy" width="40" height="40" alt="arrow-pointing-down" class="arrow-one-ap">
+                    </div>
+                </div>
+                
+                <a href="mailto:hello@shaukia.com" class="footer-email">SEND AN EMAIL</a>
+                
+                <div class="footer-bottom">
+                    <div class="footer-social">
+                        <a href="https://instagram.com/shaukia" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://facebook.com/shaukia" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="https://linkedin.com/in/shaukia" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>            
+                    <div class="footer-credit">
+                        SHAUKIA ALHASSAN © 2023
+                    </div>
+                    
+                    <div class="footer-credit">
+                        DESIGNED & DEVELOPED BY YOUR NAME
+                    </div>
+                </div>
+            </footer>  
+        </main>
+    </div>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
