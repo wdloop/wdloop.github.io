@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Morph Test</title>
+    <style>
+        :root {
+            --color-text: #3E3F29;
+            --color-bg: #F1F0E4;
+        }
+        
+        body {
+            background-color: var(--color-bg);
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        /* Text Morph Animation */
+        .text-morph {
+            position: relative;
+            width: 75px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .text-morph span {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: var(--color-text);
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .text-morph .text-container {
+            position: relative;
+            width: 60px;
+            height: 100%;
+            overflow: hidden;
+            margin-left: 15px;
+        }
+
+        .text-morph .menu {
+            transform: translateY(0);
+        }
+
+        .text-morph .close {
+            transform: translateY(20px);
+        }
+
+        .text-morph .circle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-text);
+            border-radius: 50%;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        /* Active state for the animation */
+        .text-morph.active .menu {
+            transform: translateY(-20px);
+        }
+
+        .text-morph.active .close {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="text-morph" id="text-morph-test">
+        <div class="text-container">
+            <span class="menu">MENU</span>
+            <span class="close">CLOSE</span>
+        </div>
+        <div class="circle"></div>
+    </div>
+      <nav class="main-nav" id="main-nav">
+    <a class="line" href="#hero">HOME</a>
+    <a class="line" href="#about">ABOUT</a>
+    <a class="line" href="#portfolio">PORTFOLIO</a>
+    <a class="line" href="#contact">CONTACT</a>
+  </nav>
+
+    <!-- GSAP -->
+    <script src="js/gsap.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textMorph = document.getElementById('text-morph-test');
+            const menuText = textMorph.querySelector('.menu');
+            const closeText = textMorph.querySelector('.close');
+            const circle = textMorph.querySelector('.circle');
+            
+            // Set initial state
+            gsap.set(menuText, { y: 0 });
+            gsap.set(closeText, { y: 20 });
+            gsap.set(circle, { 
+                x: 0, 
+                scaleX: 1, 
+                borderRadius: "50%" 
+            });
+            
+            // Click event
+            textMorph.addEventListener('click', function() {
+                const isActive = textMorph.classList.toggle('active');
+                
+                if (isActive) {
+                    // Activate animation
+                    gsap.to(menuText, {
+                        y: -20,
+                        duration: 0.5,
+                        ease: "power2.inOut"
+                    });
+                    
+                    gsap.to(closeText, {
+                        y: 0,
+                        duration: 0.5,
+                        ease: "power2.inOut"
+                    });
+                    
+                    // Circle animation
+                    const tl = gsap.timeline();
+                    tl.to(circle, {
+                        x: -20,
+                        scaleX: 2.5,
+                        borderRadius: "4px",
+                        duration: 0.2,
+                        ease: "power1.out"
+                    }).to(circle, {
+                        x: 0,
+                        scaleX: 1,
+                        borderRadius: "50%",
+                        duration: 0.2,
+                        ease: "power1.in"
+                    });
+                } else {
+                    // Deactivate animation
+                    gsap.to(menuText, {
+                        y: 0,
+                        duration: 0.5,
+                        ease: "power2.inOut"
+                    });
+                    
+                    gsap.to(closeText, {
+                        y: 20,
+                        duration: 0.5,
+                        ease: "power2.inOut"
+                    });
+                    
+                    // Circle animation
+                    const tl = gsap.timeline();
+                    tl.to(circle, {
+                        x: -20,
+                        scaleX: 2.5,
+                        borderRadius: "4px",
+                        duration: 0.2,
+                        ease: "power1.out"
+                    }).to(circle, {
+                        x: 0,
+                        scaleX: 1,
+                        borderRadius: "50%",
+                        duration: 0.2,
+                        ease: "power1.in"
+                    });
+                }
+                
+                console.log("Text morph clicked, active state:", isActive);
+            });
+        });
+    </script>
+</body>
+</html>
