@@ -1,224 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LOOP WD</title>
-  
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@100..900&display=swap" rel="stylesheet">
-  
-  <!-- JS Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
-  <script src="https://unpkg.com/gsap@3/dist/TextPlugin.min.js"></script>
-  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68819/EffectComposer.js"></script>
-  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68819/RenderPass.js"></script>
-  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68819/ShaderPass.js"></script>
-  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68819/CopyShader.js"></script>
-  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68819/LuminosityHighPassShader.js"></script>
-  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68819/UnrealBloomPass.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/loaders/FontLoader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/geometries/TextGeometry.js"></script>
-  <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"></script>
-</head>
-<body>
-
-
-  <!-- Main Content -->
-  <div id="wrapper">
-    <div id="content">
-      <!-- Custom Cursor -->
-      <div id="custom-cursor"></div>
-      
-      <!-- Canvas for Three.js -->
-      <canvas class="experience"></canvas>
-      
-      <!-- Scroll Target for ScrollTrigger -->
-      <div class="scrollTarget"></div>
-      
-      <!-- Vignette Effect -->
-      <div class="vignette-radial"></div>
-
-      
-      <!-- Sound Toggle -->
-      <div class="footer-sound">
-        <span id="bar-1" class="sbar"></span>
-        <span id="bar-2" class="sbar"></span>
-        <span id="bar-3" class="sbar"></span>
-        <span id="bar-4" class="sbar"></span>
-      </div>
-      
-      <!-- Navigation 
-      <nav class="navbar custom-navbar fixed-top text-white">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-          <a class="navbar-brand text-white" href="#">
-            <svg class="infinity-brand" viewBox="0 0 200 100" width="80" height="40" aria-label="infinity loop">
-              <path
-                d="M30,50 C30,20 70,20 100,50 C130,80 170,80 170,50 C170,20 130,20 100,50 C70,80 30,80 30,50 Z"
-                fill="none"
-                stroke="#ffffff"
-                stroke-width="15"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>-->
-          <!-- Custom Hamburger Button 
-          <button class="btn2 p-0 m-0" id="hamburgerToggle" aria-label="Toggle navigation" aria-expanded="false">
-            <div class="icon"></div>
-          </button> 
-        </div> -->
-        <!-- Fullscreen Menu 
-        <div id="mobileMenu" aria-hidden="true" tabindex="-1">
-          <a class="nav-link" href=".">Home</a>
-          <a class="nav-link" href="">About</a>
-          <a class="nav-link" href="#">Services</a>
-          <a class="nav-link" href="#">Contact</a>
-        </div>
-      </nav>-->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-<style>
-     /* Paralax Effect On GSAP **********************************/
-    /* header ********/
-    .header {
-      position: relative;
-      display: flex;
-      padding: 0 70px;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100vh;
-      font-family: "Boldonse", sans-serif;
-    }
-    
-    
-    .title {
-      position: relative;
-      margin: 0;
-      font-size: 85px;
-      text-align: center;
-      color: #fff;
-      text-transform: uppercase;
-      mix-blend-mode: difference;
-      z-index: 2;
-    }
-    
-    
-    .title_paralax {
-      display: inline-block;
-      will-change: transform;
-    }
-    
-    .title .stroke {
-      display: inline-block;
-      color: transparent;
-      -webkit-text-stroke: 1px var(--pr-color);
-    }
-    .title .stroke {
-      display: inline-block;
-      color: transparent;
-      -webkit-text-stroke: 1px #fff;
-    }
-    
-</style>
-
-    <header class="header">
-      <h1 class="title" data-splitting><span class="title_paralax">LOOP</span><span class="stroke">WebDesing</span></h1>
-    </header>
-<script>
-        // Header parallax
-      function header() {
-        gsap.to('.title_paralax', {
-          scrollTrigger: {
-            trigger: '.header',
-            start: 'top top',
-            scrub: 1.9
-          },
-          yPercent: -200,
-          xPercent: -20
-        });
-        
-        gsap.to('.header .stroke', {
-          scrollTrigger: {
-            trigger: '.header',
-            start: 'top top',
-            scrub: 1.9
-          },
-          xPercent: 50,
-          zPercent: 20,
-        });
-        
-
-      }
-      header();
-
-</script>
-      <!-- The End Section -->
-      <footer id="theend" class="text-light py-4">
-        <div class="container">
-          <div class="row text-center align-items-center">
-            <div class="footer-links d-flex flex-column flex-md-row justify-content-md-end align-items-center">
-              <a class="text-element-footer" href="#">webdesignloop.contact@gmail.com</a>
-              <a class="text-element-footer" href="#">+212678362534</a>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Infinite Loop Scrolling | Codrops</title>
+		<meta name="description" content="Infinite loop scrolling based on the animation seen on Bureau DAM. " />
+		<meta name="keywords" content="infinite scrolling, loop scrolling, gsap, lenis" />
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="stylesheet" href="https://use.typekit.net/bvo6szq.css">
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<script>document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+		<!--script src="//tympanus.net/codrops/adpacks/analytics.js"></script-->
+	</head>
+	<body class="loading">
+		<main>
+			<div class="frame">
+				<div class="frame__title"> 
+					<h1 class="frame__title-main">Contact Us : webdesignloop.contact@gmail.com</h1> 
+					<a aria-label="Contact Us" class="frame__title-back" href="mailto:marwan.aithaddou@edu.uca.ac.ma"> 
+						<span class="oh__inner">Contact Us</span> 
+						<svg width="18px" height="18px" viewBox="0 0 24 24"><path vector-effect="non-scaling-stroke" d="M18.25 15.5a.75.75 0 00.75-.75v-9a.75.75 0 00-.75-.75h-9a.75.75 0 000 1.5h7.19L6.22 16.72a.75.75 0 101.06 1.06L17.5 7.56v7.19c0 .414.336.75.75.75z"></path>
+						</svg>
+					</a>
+				</div>
+                
+			</div>
+			<div class="grid">
+				<div class="grid__item grid__item--stack">
+                <svg class="grid__item-logo" width="100%" height="100%" viewBox="0 0 290.14 140.24" xmlns="http://www.w3.org/2000/svg">
+                    <g id="svgGroup" stroke-linecap="round" fill-rule="nonzero" font-size="40pt" stroke="#FFF" stroke-width="0mm" fill="#FFF" style="stroke:#F3E2D4;stroke-width:5mm;fill:#F3E2D4" preserveAspectRatio="none">
+                        <path d="M 49.327 105.785 L 0 105.785 L 0 1.456 L 9.385 1.456 L 9.385 96.836 L 49.327 96.836 L 49.327 105.785 Z M 256.458 65.697 L 232.813 65.697 L 232.813 105.785 L 223.427 105.785 L 223.427 1.456 L 256.458 1.456 Q 261.769 1.456 266.461 3.456 Q 271.154 5.457 274.646 8.949 Q 278.138 12.442 280.139 17.134 Q 282.14 21.827 282.14 27.138 L 282.14 40.088 Q 282.14 45.399 280.139 50.055 Q 278.138 54.712 274.646 58.204 Q 271.154 61.696 266.461 63.697 Q 261.769 65.697 256.458 65.697 Z M 272.754 40.088 L 272.754 27.138 Q 272.754 23.646 271.445 20.626 Q 270.135 17.607 267.844 15.315 Q 265.552 13.024 262.532 11.714 Q 259.513 10.404 256.021 10.404 L 232.813 10.404 L 232.813 56.749 L 256.021 56.749 Q 259.513 56.749 262.532 55.439 Q 265.552 54.129 267.844 51.874 Q 270.135 49.619 271.445 46.599 Q 272.754 43.58 272.754 40.088 Z M 95.817 107.24 L 88.396 107.24 Q 83.085 107.24 78.392 105.239 Q 73.7 103.238 70.208 99.746 Q 66.715 96.254 64.715 91.598 Q 62.714 86.942 62.714 81.63 L 62.714 25.61 Q 62.714 20.299 64.715 15.643 Q 66.715 10.986 70.208 7.494 Q 73.7 4.002 78.392 2.001 Q 83.085 0.001 88.396 0.001 L 95.817 0.001 Q 101.128 0.001 105.784 2.001 Q 110.44 4.002 113.933 7.494 Q 117.425 10.986 119.426 15.643 Q 121.426 20.299 121.426 25.61 L 121.426 81.63 Q 121.426 86.942 119.426 91.598 Q 117.425 96.254 113.933 99.746 Q 110.44 103.238 105.784 105.239 Q 101.128 107.24 95.817 107.24 Z M 112.041 81.63 L 112.041 25.61 Q 112.041 22.118 110.731 19.098 Q 109.422 16.079 107.167 13.824 Q 104.911 11.568 101.892 10.259 Q 98.873 8.949 95.38 8.949 L 88.833 8.949 Q 85.34 8.949 82.321 10.259 Q 79.302 11.568 77.01 13.824 Q 74.718 16.079 73.409 19.098 Q 72.099 22.118 72.099 25.61 L 72.099 81.63 Q 72.099 85.123 73.409 88.142 Q 74.718 91.161 77.01 93.453 Q 79.302 95.745 82.321 97.054 Q 85.34 98.364 88.833 98.364 L 95.38 98.364 Q 98.873 98.364 101.892 97.054 Q 104.911 95.745 107.167 93.453 Q 109.422 91.161 110.731 88.142 Q 112.041 85.123 112.041 81.63 Z M 175.41 107.24 L 167.989 107.24 Q 162.678 107.24 157.985 105.239 Q 153.292 103.238 149.8 99.746 Q 146.308 96.254 144.307 91.598 Q 142.307 86.942 142.307 25.61 Q 142.307 20.299 144.307 15.643 Q 146.308 10.986 149.8 7.494 Q 153.292 4.002 157.985 2.001 Q 162.678 0.001 167.989 0.001 L 175.41 0.001 Q 180.721 0.001 185.377 2.001 Q 190.033 4.002 193.525 7.494 Q 197.018 10.986 199.018 15.643 Q 201.019 20.299 201.019 25.61 L 201.019 81.63 Q 201.019 86.942 199.018 91.598 Q 197.018 96.254 193.525 99.746 Q 190.033 103.238 185.377 105.239 Q 180.721 107.24 175.41 107.24 Z M 191.634 81.63 L 191.634 25.61 Q 191.634 22.118 190.324 19.098 Q 189.015 16.079 186.759 13.824 Q 184.504 11.568 181.485 10.259 Q 178.465 8.949 174.973 8.949 L 168.425 8.949 Q 164.933 8.949 161.914 10.259 Q 158.895 11.568 156.603 13.824 Q 154.311 16.079 153.001 19.098 Q 151.692 22.118 151.692 25.61 L 151.692 81.63 Q 151.692 85.123 153.001 88.142 Q 154.311 91.161 156.603 93.453 Q 158.895 95.745 161.914 97.054 Q 164.933 98.364 168.425 98.364 L 174.973 98.364 Q 178.465 98.364 181.485 97.054 Q 184.504 95.745 186.759 93.453 Q 189.015 91.161 190.324 88.142 Q 191.634 85.123 191.634 81.63 Z" id="SLANT" vector-effect="non-scaling-stroke"/>
+                    </g>
+                </svg>
+                <p class="grid__item-text credits"> <span style=" font-size: 2rem; font-weight: 900;">Experience Is Everything</span>
+                    <br>
+                    We are a creative web design agency specializing in innovative digital experiences. Our team is passionate about creating beautiful, functional websites that engage users and drive results. With years of experience in the industry, we've helped numerous businesses establish a strong online presence and achieve their digital goals.
+                </p>
+				</div>
+				<div class="grid__item">
+					<div class="grid__item-inner">
+						<div class="grid__item">
+    <div class="grid__item-inner">
+        <div class="carousel-container">
+            <div class="carousel-track">
+                <div class="carousel-item">
+                    <div class="grid__item-img" style="background-image:url(img/p1.webp);"></div>
+                    <p class="grid__item-text"><a href="#">View the project &rarr;</a></p>
+                </div>
+                <div class="carousel-item">
+                    <div class="grid__item-img" style="background-image:url(img/p1.webp);"></div>
+                    <p class="grid__item-text"><a href="#">View the project &rarr;</a></p>
+                </div>
+                <div class="carousel-item">
+                    <div class="grid__item-img" style="background-image:url(img/p1.webp);"></div>
+                    <p class="grid__item-text"><a href="#">View the project &rarr;</a></p>
+                </div>
+                <div class="carousel-item">
+                    <div class="grid__item-img" style="background-image:url(img/p1.webp);"></div>
+                    <p class="grid__item-text"><a href="#">View the project &rarr;</a></p>
+                </div>
             </div>
-          </div>
+            <div class="carousel-nav">
+                <button class="carousel-prev">Prev</button>
+                <button class="carousel-next">Next</button>
+            </div>
+            <div class="carousel-indicators"></div>
         </div>
-      </footer>
     </div>
-  </div>
-
-  <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
-  <script src="script2.js"></script>
-  
-<script>
-  // Custom cursor functionality
-  const cursor = document.getElementById('custom-cursor');
-  window.addEventListener('mousemove', function(e) {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-  });
-  window.addEventListener('mousedown', function() {
-    cursor.style.background = 'rgba(37,150,190,0.8)';
-    cursor.style.width = '40px';
-    cursor.style.height = '40px';
-  });
-  window.addEventListener('mouseup', function() {
-    cursor.style.background = 'rgba(37,150,190,0.5)';
-    cursor.style.width = '32px';
-    cursor.style.height = '32px';
-  });
-  
-  // Mobile menu functionality
-  const toggleBtn = document.getElementById("hamburgerToggle");
-  const mobileMenu = document.getElementById("mobileMenu");
-  toggleBtn.addEventListener("click", () => {
-    const isOpen = toggleBtn.classList.toggle("open");
-    mobileMenu.classList.toggle("open");
-    // Accessibility attributes
-    toggleBtn.setAttribute("aria-expanded", isOpen);
-    mobileMenu.setAttribute("aria-hidden", !isOpen);
-    // Focus management for keyboard users
-    if (isOpen) {
-      mobileMenu.querySelector("a").focus();
-    } else {
-      toggleBtn.focus();
-    }
-  });
-</script>
-</body>
+</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<script src="https://tympanus.net/codrops/adpacks/cda_sponsor.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@0.2.28/bundled/lenis.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+		<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+		<script src="js/index.js"></script>
+	</body>
 </html>
